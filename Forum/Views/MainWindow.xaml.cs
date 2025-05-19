@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using Forum.Models;
+using Forum.ViewModels;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -16,9 +18,12 @@ namespace Forum
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        private readonly ForumContext _context;
+        public MainWindow(MainViewModel viewModel, ForumContext context)
         {
             InitializeComponent();
+            _context = context;
+            DataContext = viewModel;
         }
     }
 }
