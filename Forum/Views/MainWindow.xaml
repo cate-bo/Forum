@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Forum"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
+    <Grid Name="grd_main">
 
     </Grid>
 </Window>

@@ -8,6 +8,10 @@ using System.Windows;
 
 namespace Forum
 {
+    public enum Themes
+    {
+        standard
+    }
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
