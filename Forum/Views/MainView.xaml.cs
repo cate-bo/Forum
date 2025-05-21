@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Forum.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,13 +17,14 @@ using System.Windows.Shapes;
 namespace Forum.Views
 {
     /// <summary>
-    /// Interaction logic for MainPage.xaml
+    /// Interaction logic for MainView.xaml
     /// </summary>
-    public partial class MainPage : Page
+    public partial class MainView : UserControl
     {
-        public MainPage()
+        public MainView(MainViewModel viewModel)
         {
             InitializeComponent();
+            DataContext = viewModel;
         }
     }
 }

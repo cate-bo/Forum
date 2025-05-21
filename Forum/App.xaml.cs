@@ -26,7 +26,7 @@ namespace Forum
             builder.AddDbContext<ForumContext>(options =>
             options.UseSqlServer("Data Source=CATE_;Initial Catalog=Forum;Integrated Security=True;TrustServerCertificate=True"));
 
-            builder.AddTransient<MainWindow>();
+            //builder.AddTransient<MainWindow>();
             builder.AddTransient<MainViewModel>();
 
             ServiceProvider = builder.BuildServiceProvider();
@@ -35,8 +35,9 @@ namespace Forum
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            MainWindow window = ServiceProvider.GetRequiredService<MainWindow>();
-            window.Show();
+            MainViewModel mainView = ServiceProvider.GetRequiredService<MainViewModel>();
+            //MainWindow window = ServiceProvider.GetRequiredService<MainWindow>();
+            //window.Show();
         }
     }
 
