@@ -8,7 +8,7 @@
              d:DesignHeight="1080" d:DesignWidth="1920">
     <UserControl.Resources>
         <Style x:Key="myHeaderStyle" TargetType="{x:Type GridViewColumnHeader}">
-            <Setter Property="Visibility" Value="Collapsed" />
+            <Setter Property="Visibility" Value="Visible"/>
         </Style>
     </UserControl.Resources>
     <Grid>
@@ -34,8 +34,8 @@
         </Grid>
         <ListView Grid.Row="1" d:ItemsSource="{d:SampleData ItemCount=5}" ItemsSource="{Binding Topics}" Name="TopicList">
             <ListView.View>
-                <GridView ColumnHeaderContainerStyle="{StaticResource myHeaderStyle}"> <!--TODO trying to make column as wide as listview this binding doesnt work-->
-                    <GridViewColumn Width="{Binding TopicList.Width}">
+                <GridView ColumnHeaderContainerStyle="{StaticResource myHeaderStyle}">
+                    <GridViewColumn Width="{Binding Width, ElementName=TopicList}">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <Button Command="{Binding DataContext.SelectTopic, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}">

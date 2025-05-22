@@ -30,10 +30,7 @@ namespace Forum
             DataContext = viewModel;
             WindowState = WindowState.Maximized;
 
-            MainView thing = new MainView(viewModel);
-            grd_main.Children.Add(thing);
-            Grid.SetColumn(thing, 0);
-            Grid.SetRow(thing, 1);
+            
         }
 
 

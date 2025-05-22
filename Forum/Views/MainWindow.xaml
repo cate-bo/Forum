@@ -19,7 +19,8 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Image Source="C:\Users\cate\source\repos\Forum\Forum\Views\Assets\logo_standard.png" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"/>
-
+        <Button HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" Command="{Binding GoHome}">
+            <Image Source="C:\Users\cate\source\repos\Forum\Forum\Views\Assets\logo_standard.png"/>
+        </Button>
     </Grid>
 </Window>
