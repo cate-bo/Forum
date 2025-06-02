@@ -20,16 +20,32 @@ namespace Forum.ViewModels
         //currently displayed UserControl
         private BaseViewModel _currentMainContent;
 
+        private bool _isPopupOpen;
+
+        public bool IsPopupOpen
+        {
+            get { return _isPopupOpen; }
+            set
+            {
+                _isPopupOpen = value;
+                OnpropertyChanged(nameof(IsPopupOpen));
+            }
+        }
+
+
         public ObservableCollection<Topic> Topics { get; set; } = new ObservableCollection<Topic>();
 
         public RelayCommandWithParameter SelectTopic { get; set; }
         public RelayCommand GoHome { get; set; }
+
+        public RelayCommand OpenPopupButtonPressed { get; set; }
 
         public MainViewModel(ForumContext context)
         {
             //Command shit
             SelectTopic = new RelayCommandWithParameter(ViewSelectedTopic);
             GoHome = new RelayCommand(Home);
+            OpenPopupButtonPressed = new RelayCommand(OpenPopup);
 
             _currentMainContent = this;
             _context = context;
@@ -42,6 +58,11 @@ namespace Forum.ViewModels
             }
 
             Home();
+        }
+
+        private void OpenPopup()
+        {
+            IsPopupOpen = true;
         }
 
         private void Home()

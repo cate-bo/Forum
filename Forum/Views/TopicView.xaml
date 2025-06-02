@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Forum.Views"
              mc:Ignorable="d" 
              d:DesignHeight="1080" d:DesignWidth="1920">
-    <Grid>
+    <Grid Name="grd_topicView">
         <Grid.RowDefinitions>
             <RowDefinition Height="200"/>
             <RowDefinition/>
@@ -15,26 +15,9 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding CurrentTopic.Title}" FontSize="50" VerticalAlignment="Center" TextAlignment="Center"/>
-        <ListBox Grid.Row="1" d:ItemsSource="{d:SampleData ItemCount=5}" ItemsSource="{Binding Threads}">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Button>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-                            <TextBlock Text="{Binding Title}" Grid.Column="0" Grid.Row="0"/>
-                            <TextBlock Text="bbbbbbbbbbbbb" Grid.Column="0" Grid.Row="1"/>
-                        </Grid>
-                    </Button>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+        <Button Command="{Binding DataContext.ListTopics, RelativeSource={RelativeSource AncestorType=UserControl}}">
+            <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding CurrentTopic.Title}" FontSize="50" VerticalAlignment="Center" TextAlignment="Center"/>
+        </Button>
 
     </Grid>
 </UserControl>

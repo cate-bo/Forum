@@ -32,31 +32,34 @@
                 </Button>
             </Border>
         </Grid>
-        <ListView Grid.Row="1" d:ItemsSource="{d:SampleData ItemCount=5}" ItemsSource="{Binding Topics}" Name="TopicList">
-            <ListView.View>
-                <GridView ColumnHeaderContainerStyle="{StaticResource myHeaderStyle}">
-                    <GridViewColumn Width="{Binding Width, ElementName=TopicList}">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <Button Command="{Binding DataContext.SelectTopic, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                    </Grid.RowDefinitions>
-                                    <TextBlock Text="{Binding Title}" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center"/>
-                                    <TextBlock Text="{Binding Description}" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center"/>
-                                </Grid>
-                                </Button>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                </GridView>
-            </ListView.View>
-        </ListView>
+        <ListBox HorizontalContentAlignment="Stretch" Grid.Row="1" d:ItemsSource="{d:SampleData ItemCount=5}" ItemsSource="{Binding Topics}" Name="TopicList">
+            <ListBox.Resources>
+                <Style TargetType="ListBoxItem" x:Key="ContainerStyle">
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="Transparent"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ListBox.Resources>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Button Command="{Binding DataContext.SelectTopic, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" Height="100" Margin="100,10">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="{Binding Title}" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center"/>
+                            <TextBlock Text="{Binding Description}" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center"/>
+                        </Grid>
+                    </Button>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
 
     </Grid>
 </UserControl>
