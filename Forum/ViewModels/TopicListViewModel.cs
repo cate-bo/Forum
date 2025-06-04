@@ -29,7 +29,6 @@ namespace Forum.ViewModels
 
             CurrentTopic = topic;
 
-            //load bearing loop, do not delete
             var threads = _context.Thread
                 .Where(a => a.TopicId == CurrentTopic.TopicId);
             foreach (Models.Thread thread in threads)
