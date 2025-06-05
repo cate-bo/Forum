@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Forum.ViewModels
 {
-    public class TopicListViewModel : BaseViewModel
+    public class ThreadListViewModel : BaseViewModel
     {
         public RelayCommandWithParameter SelectThread { get; set; }
         public ObservableCollection<Models.Thread> Threads { get; set; } = new ObservableCollection<Models.Thread>();
@@ -20,10 +20,10 @@ namespace Forum.ViewModels
         private TopicViewModel _parent;
         private Topic CurrentTopic { get; set; }
 
-        public TopicListViewModel(Topic topic, ForumContext context, TopicViewModel parent)
+        public ThreadListViewModel(Topic topic, ForumContext context, TopicViewModel parent)
         {
             _parent = parent;
-            View = new TopicListView(this);
+            View = new ThreadListView(this);
             SelectThread = new RelayCommandWithParameter(ViewSelectedThread);
             _context = context;
 

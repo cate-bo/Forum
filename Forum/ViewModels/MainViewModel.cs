@@ -63,6 +63,7 @@ namespace Forum.ViewModels
         public RelayCommand GoHome { get; set; }
         public RelayCommand ClickLogin { get; set; }
         public RelayCommand ClickLogout { get; set; }
+        public RelayCommand ClickFollowView { get; set; }
 
         public RelayCommand OpenPopupButtonPressed { get; set; }
 
@@ -74,6 +75,7 @@ namespace Forum.ViewModels
             OpenPopupButtonPressed = new RelayCommand(OpenPopup);
             ClickLogin = new RelayCommand(OpenLoginWindow);
             ClickLogout = new RelayCommand(Logout);
+            ClickFollowView = new RelayCommand(ViewFollowedThreads);
 
 
             _currentMainContent = this;
@@ -100,6 +102,17 @@ namespace Forum.ViewModels
             }
 
             Home();
+        }
+
+        private void ViewFollowedThreads()
+        {
+            IsPopupOpen = false;
+            _window.grd_main.Children.Remove(_currentMainContent.View);
+            _currentMainContent = new FollowViewModel(_context, LoggedInUser);
+
+            _window.grd_main.Children.Add(_currentMainContent.View);
+            Grid.SetColumn(_currentMainContent.View, 0);
+            Grid.SetRow(_currentMainContent.View, 1);
         }
 
         private void Logout()
@@ -162,6 +175,7 @@ namespace Forum.ViewModels
         private void OpenLoginWindow()
         {
             _loginWindow.Show();
+            _loginWindow.UsernameInputField.Focus();
             IsPopupOpen = false;
         }
 
@@ -176,9 +190,9 @@ namespace Forum.ViewModels
             View = new MainView(this);
             _currentMainContent = this;
 
-            _window.grd_main.Children.Add(View);
-            Grid.SetColumn(View, 0);
-            Grid.SetRow(View, 1);
+            _window.grd_main.Children.Add(_currentMainContent.View);
+            Grid.SetColumn(_currentMainContent.View, 0);
+            Grid.SetRow(_currentMainContent.View, 1);
         }
 
         private void ViewSelectedTopic(object thing)

@@ -19,7 +19,7 @@
         <Button Content="log in" HorizontalAlignment="Center" Grid.Row="2" VerticalAlignment="Center" Grid.Column="1" Command="{Binding LoginAttemtClick}"/>
         <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="username" VerticalAlignment="Center"/>
         <TextBlock HorizontalAlignment="Center" Grid.Row="1" TextWrapping="Wrap" Text="password" VerticalAlignment="Center"/>
-        <TextBox Grid.Column="1" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Text="{Binding UsernameInput}"/>
+        <TextBox Name="UsernameInputField" Grid.Column="1" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Text="{Binding UsernameInput}"/>
         <TextBox Grid.Column="1" HorizontalAlignment="Center" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Text="{Binding PasswordInput}"/>
         <TextBlock HorizontalAlignment="Center" Grid.Row="2" TextWrapping="Wrap" Text="incorrect username or password" VerticalAlignment="Top" Foreground="Red" Grid.ColumnSpan="2" Visibility="{Binding LoginAttemtErrormessage}"/>
 

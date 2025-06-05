@@ -34,7 +34,7 @@ namespace Forum.ViewModels
         private void ShowTopicList()
         {
             _view.grd_topicView.Children.Remove(_currentContent.View);
-            _currentContent = new TopicListViewModel(CurrentTopic, _context, this);
+            _currentContent = new ThreadListViewModel(CurrentTopic, _context, this);
             _view.grd_topicView.Children.Add(_currentContent.View);
 
             Grid.SetColumn(_currentContent.View, 0);

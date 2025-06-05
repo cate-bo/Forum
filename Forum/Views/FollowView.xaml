@@ -7,6 +7,37 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-            
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <ListBox Grid.Row="2" d:ItemsSource="{d:SampleData ItemCount=5}" HorizontalContentAlignment="Stretch" ItemsSource="{Binding Threads}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Button HorizontalContentAlignment="Stretch" Command="{Binding DataContext.ClickThread, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                        <Grid HorizontalAlignment="Stretch" Margin="5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding Title}" Grid.ColumnSpan="2" HorizontalAlignment="Center"/>
+                            <TextBlock Text="{Binding Op.Poster.Username}" HorizontalAlignment="Left" Grid.Row="0"/>
+                            <TextBlock Text="{Binding Op.Text}" Grid.Row="1" Grid.ColumnSpan="2"/>
+                            <Button Grid.Column="1" Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Right" Content="unfollow" Command="{Binding DataContext.ClickUnfollow, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}"/>
+                        </Grid>
+                    </Button>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="followed threads" VerticalAlignment="Center" FontSize="40"/>
+
     </Grid>
 </UserControl>

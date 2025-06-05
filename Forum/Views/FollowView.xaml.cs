@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Forum.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,10 @@ namespace Forum.Views
     /// </summary>
     public partial class FollowView : UserControl
     {
-        public FollowView()
+        public FollowView(FollowViewModel viewModel)
         {
             InitializeComponent();
+            this.DataContext = viewModel;
         }
     }
 }

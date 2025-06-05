@@ -15,7 +15,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Button Content="following" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+        <Button Content="following" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Command="{Binding ClickFollowView}"/>
         <Button Content="my threads" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1"/>
         <Button Content="logout" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="2" Command="{Binding ClickLogout}"/>
     </Grid>

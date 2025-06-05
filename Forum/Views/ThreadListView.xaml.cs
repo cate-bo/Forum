@@ -19,9 +19,9 @@ namespace Forum.Views
     /// <summary>
     /// Interaction logic for TopicListView.xaml
     /// </summary>
-    public partial class TopicListView : UserControl
+    public partial class ThreadListView : UserControl
     {
-        public TopicListView(TopicListViewModel viewModel)
+        public ThreadListView(ThreadListViewModel viewModel)
         {
             InitializeComponent();
             DataContext = viewModel;
