@@ -55,7 +55,63 @@ namespace Forum.ViewModels
             }
         }
 
+        //user creation stuff
+        private CreateUserWindow _createUserWindow;
+        private string _newUsername;
 
+        public string NewUsername
+        {
+            get { return _newUsername; }
+            set
+            {
+                _newUsername = value;
+                OnpropertyChanged(nameof(NewUsername));
+            }
+        }
+
+        private string _newPassword1;
+
+        public string NewPassword1
+        {
+            get { return _newPassword1; }
+            set
+            {
+                _newPassword1 = value;
+                OnpropertyChanged(nameof(NewPassword1));
+            }
+        }
+
+        private string _newPassword2;
+
+        public string NewPassword2
+        {
+            get { return _newPassword2; }
+            set
+            {
+                _newPassword2 = value;
+                OnpropertyChanged(nameof(NewPassword2));
+            }
+        }
+
+        public RelayCommand CreateAttemtClick { get; set; }
+
+       
+
+        private string _createAttemtErrorMessage;
+
+        public string CreateAttemtErrorMessage
+        {
+            get { return _createAttemtErrorMessage; }
+            set
+            {
+                _createAttemtErrorMessage = value;
+                OnpropertyChanged(nameof(CreateAttemtErrorMessage));
+            }
+        }
+
+
+
+        //topiclist
         public ObservableCollection<Topic> Topics { get; set; } = new ObservableCollection<Topic>();
 
         //Commands
@@ -64,6 +120,7 @@ namespace Forum.ViewModels
         public RelayCommand ClickLogin { get; set; }
         public RelayCommand ClickLogout { get; set; }
         public RelayCommand ClickFollowView { get; set; }
+        public RelayCommand ClickCreateUser { get; set; }
 
         public RelayCommand OpenPopupButtonPressed { get; set; }
 
@@ -76,8 +133,9 @@ namespace Forum.ViewModels
             ClickLogin = new RelayCommand(OpenLoginWindow);
             ClickLogout = new RelayCommand(Logout);
             ClickFollowView = new RelayCommand(ViewFollowedThreads);
+            ClickCreateUser = new RelayCommand(OpenCreateUserWindow);
 
-
+            //stuff
             _currentMainContent = this;
             _context = context;
             _window = new MainWindow(this, context);
@@ -95,6 +153,13 @@ namespace Forum.ViewModels
             LoginAttemtErrormessage = Visibility.Hidden;
             Logout();
 
+            //user creation stuff
+            _createUserWindow = new CreateUserWindow(this);
+            _createUserWindow.Closing += CloseCreateUserWindow;
+            CreateAttemtClick = new RelayCommand(AttemtUserCreation);
+            CreateAttemtErrorMessage = "";
+
+            //other stuff
             _window.Show();
             foreach (Topic topic in context.Topic)
             {
@@ -102,6 +167,29 @@ namespace Forum.ViewModels
             }
 
             Home();
+        }
+
+        private void CloseCreateUserWindow(object? sender, CancelEventArgs e)
+        {
+            if (!_closingApp)
+            {
+                e.Cancel = true;
+                NewUsername = "";
+                NewPassword1 = "";
+                NewPassword2 = "";
+                CreateAttemtErrorMessage = "";
+            }
+        }
+
+        private void AttemtUserCreation()
+        {
+            MessageBox.Show("amogus");
+            MessageBox.Show(NewUsername + NewPassword1 + NewPassword2);
+            User temp = new User();
+            if(_context.User.Where(a => a.Username == NewUsername).Count() > 0)
+            {
+
+            }
         }
 
         private void ViewFollowedThreads()
@@ -158,6 +246,7 @@ namespace Forum.ViewModels
         {
             _closingApp = true;
             _loginWindow.Close();
+            _createUserWindow.Close();
         }
 
         private void CloseLoginWindow(object? sender, CancelEventArgs e)
@@ -176,6 +265,13 @@ namespace Forum.ViewModels
         {
             _loginWindow.Show();
             _loginWindow.UsernameInputField.Focus();
+            IsPopupOpen = false;
+        }
+
+        private void OpenCreateUserWindow()
+        {
+            _createUserWindow.Show();
+            _createUserWindow.UsernameInputField.Focus();
             IsPopupOpen = false;
         }
 
