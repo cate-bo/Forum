@@ -157,6 +157,9 @@ namespace Forum.ViewModels
             _createUserWindow = new CreateUserWindow(this);
             _createUserWindow.Closing += CloseCreateUserWindow;
             CreateAttemtClick = new RelayCommand(AttemtUserCreation);
+            NewUsername = "";
+            NewPassword1 = "";
+            NewPassword2 = "";
             CreateAttemtErrorMessage = "";
 
             //other stuff
@@ -178,18 +181,43 @@ namespace Forum.ViewModels
                 NewPassword1 = "";
                 NewPassword2 = "";
                 CreateAttemtErrorMessage = "";
+                _createUserWindow.Hide();
             }
         }
 
         private void AttemtUserCreation()
         {
-            MessageBox.Show("amogus");
-            MessageBox.Show(NewUsername + NewPassword1 + NewPassword2);
-            User temp = new User();
-            if(_context.User.Where(a => a.Username == NewUsername).Count() > 0)
+            if(NewUsername.Length < 1)
             {
-
+                CreateAttemtErrorMessage = "username cannot be empty";
             }
+            else if(_context.User.Where(a => a.Username == NewUsername).Count() > 0)
+            {
+                CreateAttemtErrorMessage = "username already taken";
+                NewUsername = "";
+            }
+            else if(NewPassword1 != NewPassword2)
+            {
+                CreateAttemtErrorMessage = "passwords don't match";
+            }
+            else
+            {
+                User temp = new User();
+                temp.Username = NewUsername;
+                temp.Password = NewPassword1;
+                _context.Add(temp);
+                _context.SaveChanges();
+                Login(temp);
+
+                NewUsername = "";
+                NewPassword1 = "";
+                NewPassword2 = "";
+                CreateAttemtErrorMessage = "";
+                _createUserWindow.Hide();
+            }
+
+            NewPassword1 = "";
+            NewPassword2 = "";
         }
 
         private void ViewFollowedThreads()
@@ -227,11 +255,7 @@ namespace Forum.ViewModels
             }
             if (temp.Password == PasswordInput)
             {
-                LoggedInUser = temp;
-                //TODO update top right corner proper solution
-                _window.LoginDisplay.Text = LoggedInUser.Username;
-                _window.popupthing.Child = new UserMenu(this);
-                _isLoggedIn = true;
+                Login(temp);
                 _loginWindow.Close();
             }
             else
@@ -240,6 +264,15 @@ namespace Forum.ViewModels
                 PasswordInput = "";
                 LoginAttemtErrormessage = Visibility.Visible;
             }
+        }
+
+        private void Login(User user)
+        {
+            LoggedInUser = user;
+            //TODO update top right corner proper solution
+            _window.LoginDisplay.Text = LoggedInUser.Username;
+            _window.popupthing.Child = new UserMenu(this);
+            _isLoggedIn = true;
         }
 
         private void CloseMainWindow(object? sender, CancelEventArgs e)

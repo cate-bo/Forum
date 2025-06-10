@@ -29,5 +29,20 @@ namespace Forum.ViewModels
             OPsUsername = OP.Poster.Username;
             var posts = _context.Post.Where(a => a.PredecessorId == OP.PostId);
         }
+
+        public void FillPostList(int predecessorID, double offset)
+        {
+            var posts = _context.Post.Where(a => a.PredecessorId == predecessorID);
+            foreach (Post post in posts)
+            {
+                PostViewModel temp = new PostViewModel(post);
+                ((ThreadView)View).PostList.Children.Add(temp.View);
+                temp.View.Margin = new System.Windows.Thickness(offset, 5, 0, 0);
+
+                //recursion to fill in replies
+                FillPostList(temp.ThisPost.PostId, 20);
+                //TODO test this
+            }
+        }
     }
 }

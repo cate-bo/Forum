@@ -18,6 +18,7 @@
         <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding _thread.Title}" FontSize="40"/>
         <TextBlock Grid.Row="1" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding OPsUsername}" VerticalAlignment="Top" Margin="15"/>
         <TextBlock Grid.Row="1" HorizontalAlignment="Center" Margin="0" TextWrapping="Wrap" Text="{Binding OP.Text}" VerticalAlignment="Center"/>
+        <StackPanel Grid.Row="2" Name="PostList"/>
 
 
     </Grid>
