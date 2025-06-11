@@ -12,10 +12,12 @@ namespace Forum.ViewModels
     public class PostViewModel : BaseViewModel
     {
         public Post ThisPost { get; set; }
-        public PostViewModel(Post post)
+        private ThreadViewModel _parentViewModel;
+        public PostViewModel(Post post, ThreadViewModel parentViewModel)
         {
             View = new PostView(this);
             ThisPost = post;
+            _parentViewModel = parentViewModel;
         }
     }
 }

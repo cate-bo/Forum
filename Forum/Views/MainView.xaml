@@ -25,7 +25,7 @@
                 <ColumnDefinition Width="100"/>
             </Grid.ColumnDefinitions>
             <Border Grid.Column="1" Margin="30">
-                <Button HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontFamily="Comic Sans MS">
+                <Button HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontFamily="Comic Sans MS" Command="{Binding ClickNewTopic}">
                     <Viewbox Stretch="Uniform">
                         <TextBlock Text="+" FontSize="80" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     </Viewbox>

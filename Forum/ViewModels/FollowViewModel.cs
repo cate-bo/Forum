@@ -17,14 +17,16 @@ namespace Forum.ViewModels
         public ObservableCollection<Models.Thread> Threads { get; set; }
         private ForumContext _context;
         private User _user;
+        private MainViewModel _parent;
 
         public RelayCommandWithParameter ClickThread { get; set; }
         public RelayCommandWithParameter ClickUnfollow { get; set; }
-        public FollowViewModel(ForumContext context, User loggedInUser)
+        public FollowViewModel(ForumContext context, User loggedInUser, MainViewModel parent)
         {
             View = new FollowView(this);
             _context = context;
             _user = loggedInUser;
+            _parent = parent;
             Threads = new ObservableCollection<Models.Thread>();
             ClickThread = new RelayCommandWithParameter(ViewThread);
             ClickUnfollow = new RelayCommandWithParameter(UnfollowThread);
@@ -44,8 +46,7 @@ namespace Forum.ViewModels
 
         private void ViewThread(object thread)
         {
-            //TODO
-            MessageBox.Show("amogus");
+            _parent.Viewthread((Models.Thread)thread);
         }
 
         private void UnfollowThread(object thread)

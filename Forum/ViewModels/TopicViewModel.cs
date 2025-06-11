@@ -19,6 +19,7 @@ namespace Forum.ViewModels
         private BaseViewModel _currentContent;
         private TopicView _view;
         public RelayCommand ListTopics { get; set; }
+        
         public TopicViewModel(Topic topic, ForumContext context)
         {
             ListTopics = new RelayCommand(ShowTopicList);

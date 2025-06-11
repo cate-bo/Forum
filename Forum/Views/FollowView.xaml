@@ -18,7 +18,7 @@
         <ListBox Grid.Row="2" d:ItemsSource="{d:SampleData ItemCount=5}" HorizontalContentAlignment="Stretch" ItemsSource="{Binding Threads}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Button HorizontalContentAlignment="Stretch" Command="{Binding DataContext.ClickThread, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                    <Button HorizontalContentAlignment="Stretch" Command="{Binding DataContext.ClickThread, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}">
                         <Grid HorizontalAlignment="Stretch" Margin="5">
                             <Grid.RowDefinitions>
                                 <RowDefinition/>

@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Printing;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -19,7 +20,7 @@ namespace Forum.ViewModels
         private readonly ForumContext _context;
         private MainWindow _window;
         //currently displayed UserControl
-        private BaseViewModel _currentMainContent;
+        public BaseViewModel CurrentMainContent { get; set; }
 
         //user and login stuff
         private User LoggedInUser;
@@ -29,8 +30,31 @@ namespace Forum.ViewModels
         private UserMenu _userMenu;
         private LoginWindow _loginWindow;
         private bool _closingApp;
-        public string UsernameInput { get; set; }
-        public string PasswordInput { get; set; }
+
+        private string _usernameInput;
+
+        public string UsernameInput
+        {
+            get { return _usernameInput; }
+            set
+            {
+                _usernameInput = value;
+                OnpropertyChanged(nameof(UsernameInput));
+            }
+        }
+
+        private string _passwordInput;
+
+        public string PasswordInput
+        {
+            get { return _passwordInput; }
+            set
+            {
+                _passwordInput = value;
+                OnpropertyChanged(nameof(PasswordInput));
+            }
+        }
+
         public RelayCommand LoginAttemtClick { get; set; }
         private System.Windows.Visibility _loginAttemtErrormessage;
 
@@ -109,6 +133,47 @@ namespace Forum.ViewModels
             }
         }
 
+        //topic creation stuff
+        private string _newTitle;
+
+        public string NewTitle
+        {
+            get { return _newTitle; }
+            set
+            {
+                _newTitle = value;
+                OnpropertyChanged(nameof(NewTitle));
+            }
+        }
+
+        private string _newDescription;
+
+        public string NewDescription
+        {
+            get { return _newDescription; }
+            set
+            {
+                _newDescription = value;
+                OnpropertyChanged(nameof(NewDescription));
+            }
+        }
+
+        public RelayCommand NewTopicAttemtClick { get; set; }
+
+        private CreateTopicWindow _createTopicWindow;
+
+        private string _createTopicAttemtErrormessage;
+
+        public string CreateTopicAttemtErrormessage
+        {
+            get { return _createTopicAttemtErrormessage; }
+            set
+            {
+                _createTopicAttemtErrormessage = value;
+                OnpropertyChanged(nameof(CreateTopicAttemtErrormessage));
+            }
+        }
+
 
 
         //topiclist
@@ -121,8 +186,9 @@ namespace Forum.ViewModels
         public RelayCommand ClickLogout { get; set; }
         public RelayCommand ClickFollowView { get; set; }
         public RelayCommand ClickCreateUser { get; set; }
-
+        public RelayCommand ClickNewTopic { get; set; }
         public RelayCommand OpenPopupButtonPressed { get; set; }
+        public RelayCommand ClickMyThreadsView { get; set; }
 
         public MainViewModel(ForumContext context)
         {
@@ -134,9 +200,11 @@ namespace Forum.ViewModels
             ClickLogout = new RelayCommand(Logout);
             ClickFollowView = new RelayCommand(ViewFollowedThreads);
             ClickCreateUser = new RelayCommand(OpenCreateUserWindow);
+            ClickNewTopic = new RelayCommand(OpenCreateTopicWindow);
+            ClickMyThreadsView = new RelayCommand(ViewMyThreads);
 
             //stuff
-            _currentMainContent = this;
+            CurrentMainContent = this;
             _context = context;
             _window = new MainWindow(this, context);
             _window.Closing += CloseMainWindow;
@@ -162,14 +230,93 @@ namespace Forum.ViewModels
             NewPassword2 = "";
             CreateAttemtErrorMessage = "";
 
+            //topic creation stuff
+            _createTopicWindow = new CreateTopicWindow(this);
+            _createTopicWindow.Closing += CloseCreateTopicWindow;
+            NewTopicAttemtClick = new RelayCommand(AttemtTopicCreation);
+            NewTitle = "";
+            NewDescription = "";
+            CreateTopicAttemtErrormessage = "";
+
             //other stuff
             _window.Show();
-            foreach (Topic topic in context.Topic)
+            RefreshTopicList();
+
+
+            Home();
+        }
+
+        private void ViewMyThreads()
+        {
+            IsPopupOpen = false;
+            _window.grd_main.Children.Remove(CurrentMainContent.View);
+            CurrentMainContent = new MyThreadsViewModel(_context, LoggedInUser, this);
+
+            _window.grd_main.Children.Add(CurrentMainContent.View);
+            Grid.SetColumn(CurrentMainContent.View, 0);
+            Grid.SetRow(CurrentMainContent.View, 1);
+        }
+
+        private void RefreshTopicList()
+        {
+            Topics.Clear();
+            foreach (Topic topic in _context.Topic)
             {
                 Topics.Add(topic);
             }
+        }
 
-            Home();
+        public void Viewthread(Models.Thread thread)
+        {
+            _window.grd_main.Children.Remove(CurrentMainContent.View);
+            CurrentMainContent = new ThreadViewModel(thread, _context);
+
+            _window.grd_main.Children.Add(CurrentMainContent.View);
+            Grid.SetColumn(CurrentMainContent.View, 0);
+            Grid.SetRow(CurrentMainContent.View, 1);
+        }
+
+        private void AttemtTopicCreation()
+        {
+            if(NewTitle.Length < 1 || NewDescription.Length < 1)
+            {
+                CreateTopicAttemtErrormessage = "title and description cannot be empty";
+            }
+            else if(_context.Topic.Where(a => a.Title ==  NewTitle).Count() > 0)
+            {
+                CreateTopicAttemtErrormessage = "topic already exists";
+            }
+            else
+            {
+                Topic temp = new Topic();
+                temp.Title = NewTitle;
+                temp.Description = NewDescription;
+                _context.Add(temp);
+                _context.SaveChanges();
+                _createTopicWindow.Close();
+                RefreshTopicList();
+            }
+            NewTitle = "";
+            NewDescription = "";
+            _createTopicWindow.TitleInput.Focus();
+        }
+
+        private void CloseCreateTopicWindow(object? sender, CancelEventArgs e)
+        {
+            if (!_closingApp)
+            {
+                e.Cancel = true;
+                NewTitle = "";
+                NewDescription = "";
+                CreateTopicAttemtErrormessage = "";
+                _createTopicWindow.Hide();
+            }
+        }
+
+        private void OpenCreateTopicWindow()
+        {
+            _createTopicWindow.Show();
+            _createTopicWindow.TitleInput.Focus();
         }
 
         private void CloseCreateUserWindow(object? sender, CancelEventArgs e)
@@ -223,12 +370,12 @@ namespace Forum.ViewModels
         private void ViewFollowedThreads()
         {
             IsPopupOpen = false;
-            _window.grd_main.Children.Remove(_currentMainContent.View);
-            _currentMainContent = new FollowViewModel(_context, LoggedInUser);
+            _window.grd_main.Children.Remove(CurrentMainContent.View);
+            CurrentMainContent = new FollowViewModel(_context, LoggedInUser, this);
 
-            _window.grd_main.Children.Add(_currentMainContent.View);
-            Grid.SetColumn(_currentMainContent.View, 0);
-            Grid.SetRow(_currentMainContent.View, 1);
+            _window.grd_main.Children.Add(CurrentMainContent.View);
+            Grid.SetColumn(CurrentMainContent.View, 0);
+            Grid.SetRow(CurrentMainContent.View, 1);
         }
 
         private void Logout()
@@ -237,6 +384,7 @@ namespace Forum.ViewModels
             _window.LoginDisplay.Text = "no user logged in";
             _window.popupthing.Child = _loginMenu;
             IsPopupOpen = false;
+            Home();
         }
 
         private void AttemtLogin()
@@ -273,6 +421,7 @@ namespace Forum.ViewModels
             _window.LoginDisplay.Text = LoggedInUser.Username;
             _window.popupthing.Child = new UserMenu(this);
             _isLoggedIn = true;
+            Home();
         }
 
         private void CloseMainWindow(object? sender, CancelEventArgs e)
@@ -280,6 +429,7 @@ namespace Forum.ViewModels
             _closingApp = true;
             _loginWindow.Close();
             _createUserWindow.Close();
+            _createTopicWindow.Close();
         }
 
         private void CloseLoginWindow(object? sender, CancelEventArgs e)
@@ -315,22 +465,22 @@ namespace Forum.ViewModels
 
         private void Home()
         {
-            _window.grd_main.Children.Remove(_currentMainContent.View);
+            _window.grd_main.Children.Remove(CurrentMainContent.View);
             View = new MainView(this);
-            _currentMainContent = this;
+            CurrentMainContent = this;
 
-            _window.grd_main.Children.Add(_currentMainContent.View);
-            Grid.SetColumn(_currentMainContent.View, 0);
-            Grid.SetRow(_currentMainContent.View, 1);
+            _window.grd_main.Children.Add(CurrentMainContent.View);
+            Grid.SetColumn(CurrentMainContent.View, 0);
+            Grid.SetRow(CurrentMainContent.View, 1);
         }
 
         private void ViewSelectedTopic(object thing)
         {
-            _window.grd_main.Children.Remove(_currentMainContent.View);
-            _currentMainContent = new TopicViewModel((Topic)thing, _context);
-            _window.grd_main.Children.Add(_currentMainContent.View);
-            Grid.SetColumn(_currentMainContent.View, 0);
-            Grid.SetRow(_currentMainContent.View, 1);
+            _window.grd_main.Children.Remove(CurrentMainContent.View);
+            CurrentMainContent = new TopicViewModel((Topic)thing, _context);
+            _window.grd_main.Children.Add(CurrentMainContent.View);
+            Grid.SetColumn(CurrentMainContent.View, 0);
+            Grid.SetRow(CurrentMainContent.View, 1);
         }
     }
 }

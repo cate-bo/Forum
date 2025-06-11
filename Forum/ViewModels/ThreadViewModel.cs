@@ -35,9 +35,9 @@ namespace Forum.ViewModels
             var posts = _context.Post.Where(a => a.PredecessorId == predecessorID);
             foreach (Post post in posts)
             {
-                PostViewModel temp = new PostViewModel(post);
+                PostViewModel temp = new PostViewModel(post, this);
                 ((ThreadView)View).PostList.Children.Add(temp.View);
-                temp.View.Margin = new System.Windows.Thickness(offset, 5, 0, 0);
+                temp.View.Margin = new System.Windows.Thickness(offset, 5, 5, 0);
 
                 //recursion to fill in replies
                 FillPostList(temp.ThisPost.PostId, 20);
