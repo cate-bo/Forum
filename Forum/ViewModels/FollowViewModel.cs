@@ -51,7 +51,7 @@ namespace Forum.ViewModels
 
         private void UnfollowThread(object thread)
         {
-            //TODO fix this
+            //TODO fix this in view
             MessageBox.Show(((Models.Thread)thread).Title);
             _context.Thread.Remove((Models.Thread) thread);
             _context.SaveChanges();
