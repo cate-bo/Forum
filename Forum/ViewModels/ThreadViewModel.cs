@@ -3,9 +3,11 @@ using Forum.Views;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace Forum.ViewModels
 {
@@ -28,15 +30,29 @@ namespace Forum.ViewModels
 
             OPsUsername = OP.Poster.Username;
             var posts = _context.Post.Where(a => a.PredecessorId == OP.PostId);
+            //hide textinput stuff when not logged in
+            if (!MainViewModel.IsLoggedIn)
+            {
+                ((ThreadView)View).grd_main.RowDefinitions[3].Height = new System.Windows.GridLength(0);
+            }
         }
 
-        public void FillPostList(int predecessorID)
+        public void RefreshPostList(int predecessorID)
         {
             var posts = _context.Post.Where(a => a.PredecessorId == predecessorID);
+            ObservableCollection<TreeViewItem> collection = new ObservableCollection<TreeViewItem>();
+            ((ThreadView)View).PostList.ItemsSource = collection;
             foreach (Post post in posts)
             {
-                
+                PostViewModel temp = new PostViewModel(post, this);
+                collection.Add(temp.PostTreeViewItem);
+                //TODO fill replies
             }
+        }
+
+        private void FillReplies(int predecessorID, TreeViewItem predecessor)
+        {
+            //TODO
         }
     }
 }

@@ -10,8 +10,6 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="200"/>
             <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -19,7 +17,6 @@
         <Button Command="{Binding DataContext.ListTopics, RelativeSource={RelativeSource AncestorType=UserControl}}">
             <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding CurrentTopic.Title}" FontSize="50" VerticalAlignment="Center" TextAlignment="Center"/>
         </Button>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="1653,104,0,0" Grid.Row="2" VerticalAlignment="Top"/>
 
     </Grid>
 </UserControl>

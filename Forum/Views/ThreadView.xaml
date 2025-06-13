@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Forum.Views"
              mc:Ignorable="d" 
              d:DesignHeight="1080" d:DesignWidth="1920">
-    <Grid>
+    <Grid Name="grd_main">
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition Height="80"/>

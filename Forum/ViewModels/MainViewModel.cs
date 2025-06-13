@@ -24,7 +24,7 @@ namespace Forum.ViewModels
 
         //user and login stuff
         private User LoggedInUser;
-        private bool _isLoggedIn;
+        public static bool IsLoggedIn;
         private bool _isPopupOpen;
         private LoginMenu _loginMenu;
         private UserMenu _userMenu;
@@ -380,7 +380,7 @@ namespace Forum.ViewModels
 
         private void Logout()
         {
-            _isLoggedIn = false;
+            IsLoggedIn = false;
             _window.LoginDisplay.Text = "no user logged in";
             _window.popupthing.Child = _loginMenu;
             IsPopupOpen = false;
@@ -420,7 +420,7 @@ namespace Forum.ViewModels
             //TODO update top right corner proper solution
             _window.LoginDisplay.Text = LoggedInUser.Username;
             _window.popupthing.Child = new UserMenu(this);
-            _isLoggedIn = true;
+            IsLoggedIn = true;
             Home();
         }
 
