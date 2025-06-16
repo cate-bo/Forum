@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Forum.Views"
              mc:Ignorable="d" 
              d:DesignHeight="200" d:DesignWidth="400">
-    <Grid>
+    <Grid Name="grd_main">
         <Grid.RowDefinitions>
             <RowDefinition Height="25"/>
             <RowDefinition/>
@@ -15,8 +15,8 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <TextBlock HorizontalAlignment="Left" Margin="5" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Center"/>
-        <TextBlock HorizontalAlignment="Stretch" Margin="5" Grid.Row="1" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Stretch"/>
+        <TextBlock HorizontalAlignment="Left" Margin="5" TextWrapping="Wrap" Text="{Binding ThisPost.Poster.Username}" VerticalAlignment="Center"/>
+        <TextBlock HorizontalAlignment="Stretch" Margin="5" Grid.Row="1" TextWrapping="Wrap" Text="{Binding ThisPost.Text}" VerticalAlignment="Stretch"/>
         <Button Content="reply" HorizontalAlignment="Right" Grid.Row="2" VerticalAlignment="Top"/>
 
     </Grid>

@@ -18,6 +18,7 @@
         <ListBox Grid.Row="2" d:ItemsSource="{d:SampleData ItemCount=5}" HorizontalContentAlignment="Stretch" ItemsSource="{Binding Threads}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
+                    <Grid>
                     <Button HorizontalContentAlignment="Stretch" Command="{Binding DataContext.ClickThread, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}">
                         <Grid HorizontalAlignment="Stretch" Margin="5">
                             <Grid.RowDefinitions>
@@ -31,9 +32,10 @@
                             <TextBlock Text="{Binding Title}" Grid.ColumnSpan="2" HorizontalAlignment="Center"/>
                             <TextBlock Text="{Binding Op.Poster.Username}" HorizontalAlignment="Left" Grid.Row="0"/>
                             <TextBlock Text="{Binding Op.Text}" Grid.Row="1" Grid.ColumnSpan="2"/>
-                            <Button Grid.Column="1" Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Right" Content="unfollow" Command="{Binding DataContext.ClickUnfollow, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}"/>
                         </Grid>
                     </Button>
+                    <Button Grid.Column="1" Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Right" Content="unfollow" Command="{Binding DataContext.ClickUnfollow, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}"/>
+                    </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
