@@ -11,11 +11,11 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="20"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Button Content="X" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-        <TextBlock Grid.Column="1" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding ReplyingTo.Username}" VerticalAlignment="Center"/>
+        <Button Content="X" HorizontalAlignment="Left" VerticalAlignment="Center" Width="20" Command="{Binding ClickXReply}"/>
+        <TextBlock Grid.Column="1" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding ReplyingTo.Poster.Username}" VerticalAlignment="Center"/>
 
     </Grid>
 </UserControl>

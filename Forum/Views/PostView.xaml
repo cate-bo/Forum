@@ -17,7 +17,7 @@
         </Grid.ColumnDefinitions>
         <TextBlock HorizontalAlignment="Left" Margin="5" TextWrapping="Wrap" Text="{Binding ThisPost.Poster.Username}" VerticalAlignment="Center"/>
         <TextBlock HorizontalAlignment="Stretch" Margin="5" Grid.Row="1" TextWrapping="Wrap" Text="{Binding ThisPost.Text}" VerticalAlignment="Stretch"/>
-        <Button Content="reply" HorizontalAlignment="Right" Grid.Row="2" VerticalAlignment="Top"/>
+        <Button Content="reply" HorizontalAlignment="Right" Grid.Row="2" VerticalAlignment="Top" Command="{Binding ClickReply}"/>
 
     </Grid>
 </UserControl>

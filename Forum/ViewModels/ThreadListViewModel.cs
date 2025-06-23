@@ -19,6 +19,46 @@ namespace Forum.ViewModels
         private ForumContext _context;
         private TopicViewModel _parent;
         private Topic CurrentTopic { get; set; }
+        public RelayCommand ClickNewThreadButton { get; set; }
+
+        //thread creation stuff
+        private string _titleInput;
+
+        public string TitleInput
+        {
+            get { return _titleInput; }
+            set
+            {
+                _titleInput = value;
+                OnpropertyChanged(nameof(TitleInput));
+            }
+        }
+
+        private string _descriptionInput;
+
+        public string DescriptionInput
+        {
+            get { return _descriptionInput; }
+            set
+            {
+                _descriptionInput = value;
+                OnpropertyChanged(nameof(DescriptionInput));
+            }
+        }
+        public RelayCommand ClickCreateThread { get; set; }
+
+        private string _threadCreationErrormessage;
+
+        public string ThreadCreationErrormessage
+        {
+            get { return _threadCreationErrormessage; }
+            set
+            {
+                _threadCreationErrormessage = value;
+                OnpropertyChanged(nameof(ThreadCreationErrormessage));
+            }
+        }
+
 
         public ThreadListViewModel(Topic topic, ForumContext context, TopicViewModel parent)
         {
@@ -26,6 +66,7 @@ namespace Forum.ViewModels
             View = new ThreadListView(this);
             SelectThread = new RelayCommandWithParameter(ViewSelectedThread);
             _context = context;
+            ClickNewThreadButton = new RelayCommand(OpenCreateThreadWindow);
 
             CurrentTopic = topic;
 
@@ -35,13 +76,67 @@ namespace Forum.ViewModels
             {
                 Threads.Add(thread);
             }
+
+            //treadcreationwindow
+            MainViewModel.CreateThreadWindow = new CreateThreadWindow(this);
+            MainViewModel.CreateThreadWindow.Closing += CreateThreadWindow_Closing;
+            TitleInput = "";
+            DescriptionInput = "";
+            ThreadCreationErrormessage = "";
+            ClickCreateThread = new RelayCommand(AttemtThreadCreation);
+
+            if (!MainViewModel.IsLoggedIn)
+            {
+                ((ThreadListView)View).grd_main.Children.Remove(((ThreadListView)View).NewThreadButton);
+            }
         }
 
-        
+        private void CreateThreadWindow_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (!MainViewModel.ClosingApp)
+            {
+                e.Cancel = true;
+                TitleInput = "";
+                DescriptionInput = "";
+                ThreadCreationErrormessage = "";
+                MainViewModel.CreateThreadWindow.Hide();
+            }
+        }
 
         private void ViewSelectedThread(object thread)
         {
             _parent.ViewSelectedThread((Models.Thread)thread);
+        }
+
+        private void AttemtThreadCreation()
+        {
+            if(TitleInput.Length < 1)
+            {
+                ThreadCreationErrormessage = "title cannot be empty";
+            }
+            else if(DescriptionInput.Length < 1)
+            {
+                ThreadCreationErrormessage = "description cannot be empty";
+            }
+            else
+            {
+                Post tempPost = new Post();
+                Models.Thread tempThread = new Models.Thread();
+                tempPost.Poster = MainViewModel.LoggedInUser;
+                tempPost.Text = DescriptionInput;
+                _context.Add(tempPost);
+                _context.SaveChanges();
+                tempThread.Title = TitleInput;
+                tempThread.Op = tempPost;
+                _context.Add(tempThread);
+                _context.SaveChanges();
+                MainViewModel.CreateThreadWindow.Close();
+            }
+        }
+
+        private void OpenCreateThreadWindow()
+        {
+            MainViewModel.CreateThreadWindow.Show();
         }
     }
 }

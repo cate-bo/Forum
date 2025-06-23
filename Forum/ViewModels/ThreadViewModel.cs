@@ -19,7 +19,32 @@ namespace Forum.ViewModels
         public Post OP { get; set; }
         public string OPsUsername { get; set; }
         public Models.Thread _thread { get; set; }
-        public Post ReplyingTo { get; set; }
+        private Post _replyingTo;
+
+        public Post ReplyingTo
+        {
+            get { return _replyingTo; }
+            set
+            {
+                _replyingTo = value;
+                OnpropertyChanged(nameof(ReplyingTo));
+            }
+        }
+
+        private string _replyText;
+
+        public string ReplyText
+        {
+            get { return _replyText; }
+            set
+            {
+                _replyText = value;
+                OnpropertyChanged(nameof(ReplyText));
+            }
+        }
+
+        public RelayCommand ClickPostButton { get; set; }
+
         public RelayCommand ClickXReply { get; set; }
         private ReplyToDisplayView _replyToDisplayView;
         public ThreadViewModel(Models.Thread thread, ForumContext context)
@@ -28,22 +53,26 @@ namespace Forum.ViewModels
             View = new ThreadView(this);
             _thread = thread;
 
+            ReplyText = "";
+
+            ClickPostButton = new RelayCommand(PostReply);
             ClickXReply = new RelayCommand(ResetReplyRecipient);
 
             _replyToDisplayView = new ReplyToDisplayView(this);
             Grid.SetRow(_replyToDisplayView, 3);
             _replyToDisplayView.Margin = new System.Windows.Thickness(20, 0, 0, 0);
-
+            _replyToDisplayView.VerticalAlignment = System.Windows.VerticalAlignment.Top;
             
             OP = _context.Post.Where(a => a.PostId == _thread.Opid)
                 .Include(b => b.Poster)
                 .First();
 
             OPsUsername = OP.Poster.Username;
-            //hide textinput stuff when not logged in
+            //hide textinput and follow button when not logged in
             if (!MainViewModel.IsLoggedIn)
             {
                 ((ThreadView)View).grd_main.RowDefinitions[3].Height = new System.Windows.GridLength(0);
+                ((ThreadView)View).grd_main.Children.Remove(((ThreadView)View).FollowButton);
             }
             RefreshPostList();
             ResetReplyRecipient();
@@ -88,7 +117,7 @@ namespace Forum.ViewModels
             }
         }
 
-        private void ChangeReplyRecipient(Post post)
+        public void ChangeReplyRecipient(Post post)
         {
             ReplyingTo = post;
             if(ReplyingTo == OP)
@@ -97,13 +126,32 @@ namespace Forum.ViewModels
             }
             else
             {
-                ((ThreadView)View).grd_main.Children.Add(_replyToDisplayView);
+                if (!((ThreadView)View).grd_main.Children.Contains(_replyToDisplayView))
+                {
+                    ((ThreadView)View).grd_main.Children.Add(_replyToDisplayView);
+                }
             }
         }
 
         private void ResetReplyRecipient()
         {
             ChangeReplyRecipient(OP);
+        }
+
+        private void PostReply()
+        {
+            if(ReplyText.Length > 0)
+            {
+                Post reply = new Post();
+                reply.Poster = MainViewModel.LoggedInUser;
+                reply.Predecessor = ReplyingTo;
+                reply.Text = ReplyText;
+                _context.Add(reply);
+                _context.SaveChanges();
+                ReplyText = "";
+                ResetReplyRecipient();
+                RefreshPostList();
+            }
         }
     }
 }

@@ -16,7 +16,7 @@ namespace Forum.ViewModels
         public Post ThisPost { get; set; }
         private ThreadViewModel _parentViewModel;
         public TreeViewItem PostTreeViewItem { get; set; }
-        public RelayCommandWithParameter ClickReply { get; set; }
+        public RelayCommand ClickReply { get; set; }
         public PostViewModel(Post post, ThreadViewModel parentViewModel)
         {
             View = new PostView(this);
@@ -25,15 +25,16 @@ namespace Forum.ViewModels
             PostTreeViewItem = new TreeViewItem();
             //PostTreeViewItem.DataContext = this;
             PostTreeViewItem.Header = View;
+            ClickReply = new RelayCommand(ReplyTo);
             if(!MainViewModel.IsLoggedIn)
             {
                 ((PostView)View).grd_main.RowDefinitions[2].Height = new System.Windows.GridLength(0);
             }
         }
 
-        private void ReplyTo(Post post)
+        private void ReplyTo()
         {
-            //_parentViewModel
+            _parentViewModel.ChangeReplyRecipient(ThisPost);
         }
     }
 }

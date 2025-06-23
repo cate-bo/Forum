@@ -6,9 +6,9 @@
              xmlns:local="clr-namespace:Forum.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
+    <Grid Name="grd_main">
         <Grid.RowDefinitions>
-            <RowDefinition Height="100"/>
+            <RowDefinition Height="50"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -33,5 +33,6 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+        <Button Name="NewThreadButton" Content="+" HorizontalAlignment="Right" Margin="10" VerticalAlignment="Center" Command="{Binding ClickNewThreadButton}"/>
     </Grid>
 </UserControl>

@@ -23,13 +23,13 @@ namespace Forum.ViewModels
         public BaseViewModel CurrentMainContent { get; set; }
 
         //user and login stuff
-        private User LoggedInUser;
+        public static User LoggedInUser;
         public static bool IsLoggedIn;
         private bool _isPopupOpen;
         private LoginMenu _loginMenu;
         private UserMenu _userMenu;
-        private LoginWindow _loginWindow;
-        private bool _closingApp;
+        public static LoginWindow LoginWindow;
+        public static bool ClosingApp;
 
         private string _usernameInput;
 
@@ -80,7 +80,7 @@ namespace Forum.ViewModels
         }
 
         //user creation stuff
-        private CreateUserWindow _createUserWindow;
+        public static CreateUserWindow CreateUserWindow;
         private string _newUsername;
 
         public string NewUsername
@@ -160,7 +160,7 @@ namespace Forum.ViewModels
 
         public RelayCommand NewTopicAttemtClick { get; set; }
 
-        private CreateTopicWindow _createTopicWindow;
+        public static CreateTopicWindow CreateTopicWindow;
 
         private string _createTopicAttemtErrormessage;
 
@@ -174,7 +174,8 @@ namespace Forum.ViewModels
             }
         }
 
-
+        //threadcreationwindow
+        public static CreateThreadWindow CreateThreadWindow;
 
         //topiclist
         public ObservableCollection<Topic> Topics { get; set; } = new ObservableCollection<Topic>();
@@ -213,17 +214,17 @@ namespace Forum.ViewModels
             //login stuff
             _loginMenu = new LoginMenu(this);
             _window.popupthing.Child = _loginMenu;
-            _closingApp = false;
+            ClosingApp = false;
 
-            _loginWindow = new LoginWindow(this);
-            _loginWindow.Closing += CloseLoginWindow;
+            LoginWindow = new LoginWindow(this);
+            LoginWindow.Closing += CloseLoginWindow;
             LoginAttemtClick = new RelayCommand(AttemtLogin);
             LoginAttemtErrormessage = Visibility.Hidden;
             Logout();
 
             //user creation stuff
-            _createUserWindow = new CreateUserWindow(this);
-            _createUserWindow.Closing += CloseCreateUserWindow;
+            CreateUserWindow = new CreateUserWindow(this);
+            CreateUserWindow.Closing += CloseCreateUserWindow;
             CreateAttemtClick = new RelayCommand(AttemtUserCreation);
             NewUsername = "";
             NewPassword1 = "";
@@ -231,8 +232,8 @@ namespace Forum.ViewModels
             CreateAttemtErrorMessage = "";
 
             //topic creation stuff
-            _createTopicWindow = new CreateTopicWindow(this);
-            _createTopicWindow.Closing += CloseCreateTopicWindow;
+            CreateTopicWindow = new CreateTopicWindow(this);
+            CreateTopicWindow.Closing += CloseCreateTopicWindow;
             NewTopicAttemtClick = new RelayCommand(AttemtTopicCreation);
             NewTitle = "";
             NewDescription = "";
@@ -241,7 +242,6 @@ namespace Forum.ViewModels
             //other stuff
             _window.Show();
             RefreshTopicList();
-
 
             Home();
         }
@@ -293,42 +293,42 @@ namespace Forum.ViewModels
                 temp.Description = NewDescription;
                 _context.Add(temp);
                 _context.SaveChanges();
-                _createTopicWindow.Close();
+                CreateTopicWindow.Close();
                 RefreshTopicList();
             }
             NewTitle = "";
             NewDescription = "";
-            _createTopicWindow.TitleInput.Focus();
+            CreateTopicWindow.TitleInput.Focus();
         }
 
         private void CloseCreateTopicWindow(object? sender, CancelEventArgs e)
         {
-            if (!_closingApp)
+            if (!ClosingApp)
             {
                 e.Cancel = true;
                 NewTitle = "";
                 NewDescription = "";
                 CreateTopicAttemtErrormessage = "";
-                _createTopicWindow.Hide();
+                CreateTopicWindow.Hide();
             }
         }
 
         private void OpenCreateTopicWindow()
         {
-            _createTopicWindow.Show();
-            _createTopicWindow.TitleInput.Focus();
+            CreateTopicWindow.Show();
+            CreateTopicWindow.TitleInput.Focus();
         }
 
         private void CloseCreateUserWindow(object? sender, CancelEventArgs e)
         {
-            if (!_closingApp)
+            if (!ClosingApp)
             {
                 e.Cancel = true;
                 NewUsername = "";
                 NewPassword1 = "";
                 NewPassword2 = "";
                 CreateAttemtErrorMessage = "";
-                _createUserWindow.Hide();
+                CreateUserWindow.Hide();
             }
         }
 
@@ -360,7 +360,7 @@ namespace Forum.ViewModels
                 NewPassword1 = "";
                 NewPassword2 = "";
                 CreateAttemtErrorMessage = "";
-                _createUserWindow.Hide();
+                CreateUserWindow.Hide();
             }
 
             NewPassword1 = "";
@@ -404,7 +404,7 @@ namespace Forum.ViewModels
             if (temp.Password == PasswordInput)
             {
                 Login(temp);
-                _loginWindow.Close();
+                LoginWindow.Close();
             }
             else
             {
@@ -426,35 +426,39 @@ namespace Forum.ViewModels
 
         private void CloseMainWindow(object? sender, CancelEventArgs e)
         {
-            _closingApp = true;
-            _loginWindow.Close();
-            _createUserWindow.Close();
-            _createTopicWindow.Close();
+            ClosingApp = true;
+            LoginWindow.Close();
+            CreateUserWindow.Close();
+            CreateTopicWindow.Close();
+            if(CreateThreadWindow != null)
+            {
+                CreateThreadWindow.Close();
+            }
         }
 
         private void CloseLoginWindow(object? sender, CancelEventArgs e)
         {
-            if(!_closingApp)
+            if(!ClosingApp)
             {
                 e.Cancel = true;
                 LoginAttemtErrormessage = Visibility.Hidden;
                 UsernameInput = "";
                 PasswordInput = "";
-                _loginWindow.Hide();
+                LoginWindow.Hide();
             }
         }
 
         private void OpenLoginWindow()
         {
-            _loginWindow.Show();
-            _loginWindow.UsernameInputField.Focus();
+            LoginWindow.Show();
+            LoginWindow.UsernameInputField.Focus();
             IsPopupOpen = false;
         }
 
         private void OpenCreateUserWindow()
         {
-            _createUserWindow.Show();
-            _createUserWindow.UsernameInputField.Focus();
+            CreateUserWindow.Show();
+            CreateUserWindow.UsernameInputField.Focus();
             IsPopupOpen = false;
         }
 

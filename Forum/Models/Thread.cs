@@ -13,8 +13,6 @@ public partial class Thread
 
     public string Title { get; set; }
 
-    public string Description { get; set; }
-
     public int TopicId { get; set; }
 
     public virtual Post Op { get; set; }

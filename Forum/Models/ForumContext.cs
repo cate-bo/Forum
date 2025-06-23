@@ -51,7 +51,6 @@ public partial class ForumContext : DbContext
         modelBuilder.Entity<Thread>(entity =>
         {
             entity.Property(e => e.ThreadId).HasColumnName("ThreadID");
-            entity.Property(e => e.Description).IsRequired();
             entity.Property(e => e.Opid).HasColumnName("OPID");
             entity.Property(e => e.Title)
                 .IsRequired()

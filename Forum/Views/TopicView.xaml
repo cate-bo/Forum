@@ -8,14 +8,14 @@
              d:DesignHeight="1080" d:DesignWidth="1920">
     <Grid Name="grd_topicView">
         <Grid.RowDefinitions>
-            <RowDefinition Height="200"/>
+            <RowDefinition Height="100"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Button Command="{Binding DataContext.ListTopics, RelativeSource={RelativeSource AncestorType=UserControl}}">
-            <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding CurrentTopic.Title}" FontSize="50" VerticalAlignment="Center" TextAlignment="Center"/>
+            <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding CurrentTopic.Title}" FontSize="25" VerticalAlignment="Center" TextAlignment="Center"/>
         </Button>
 
     </Grid>
