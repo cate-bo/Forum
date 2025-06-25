@@ -220,7 +220,6 @@ namespace Forum.ViewModels
             LoginWindow.Closing += CloseLoginWindow;
             LoginAttemtClick = new RelayCommand(AttemtLogin);
             LoginAttemtErrormessage = Visibility.Hidden;
-            Logout();
 
             //user creation stuff
             CreateUserWindow = new CreateUserWindow(this);
@@ -239,11 +238,23 @@ namespace Forum.ViewModels
             NewDescription = "";
             CreateTopicAttemtErrormessage = "";
 
+            //Threadcreationwindow
+            CreateThreadWindow = new CreateThreadWindow();
+            CreateThreadWindow.Closing += CreateThreadWindow_Closing;
+
             //other stuff
             _window.Show();
             RefreshTopicList();
-
+            Logout();
             Home();
+        }
+
+        private void CreateThreadWindow_Closing(object? sender, CancelEventArgs e)
+        {
+            if (!ClosingApp)
+            {
+                e.Cancel = true;
+            }
         }
 
         private void ViewMyThreads()
@@ -384,6 +395,10 @@ namespace Forum.ViewModels
             _window.LoginDisplay.Text = "no user logged in";
             _window.popupthing.Child = _loginMenu;
             IsPopupOpen = false;
+            LoginWindow.Close();
+            CreateUserWindow.Close();
+            CreateTopicWindow.Close();
+            CreateThreadWindow.Close();
             Home();
         }
 
@@ -430,10 +445,7 @@ namespace Forum.ViewModels
             LoginWindow.Close();
             CreateUserWindow.Close();
             CreateTopicWindow.Close();
-            if(CreateThreadWindow != null)
-            {
-                CreateThreadWindow.Close();
-            }
+            CreateThreadWindow.Close();
         }
 
         private void CloseLoginWindow(object? sender, CancelEventArgs e)

@@ -18,7 +18,7 @@ namespace Forum.ViewModels
         private ForumContext _context;
         public Post OP { get; set; }
         public string OPsUsername { get; set; }
-        public Models.Thread _thread { get; set; }
+        public Models.Thread CurrentThread { get; set; }
         private Post _replyingTo;
 
         public Post ReplyingTo
@@ -43,6 +43,20 @@ namespace Forum.ViewModels
             }
         }
 
+        private string _followButtonContent;
+
+        public string FollowOrUnfollowButtonContent
+        {
+            get { return _followButtonContent; }
+            set
+            {
+                _followButtonContent = value;
+                OnpropertyChanged(nameof(FollowOrUnfollowButtonContent));
+            }
+        }
+
+        public RelayCommand ClickFollowOrUnfollow { get; set; }
+
         public RelayCommand ClickPostButton { get; set; }
 
         public RelayCommand ClickXReply { get; set; }
@@ -51,19 +65,21 @@ namespace Forum.ViewModels
         {
             _context = context;
             View = new ThreadView(this);
-            _thread = thread;
+            CurrentThread = thread;
 
             ReplyText = "";
 
             ClickPostButton = new RelayCommand(PostReply);
             ClickXReply = new RelayCommand(ResetReplyRecipient);
+            ClickFollowOrUnfollow = new RelayCommand(FollowOrUnfollowThread);
+
 
             _replyToDisplayView = new ReplyToDisplayView(this);
             Grid.SetRow(_replyToDisplayView, 3);
             _replyToDisplayView.Margin = new System.Windows.Thickness(20, 0, 0, 0);
             _replyToDisplayView.VerticalAlignment = System.Windows.VerticalAlignment.Top;
             
-            OP = _context.Post.Where(a => a.PostId == _thread.Opid)
+            OP = _context.Post.Where(a => a.PostId == CurrentThread.Opid)
                 .Include(b => b.Poster)
                 .First();
 
@@ -72,7 +88,18 @@ namespace Forum.ViewModels
             if (!MainViewModel.IsLoggedIn)
             {
                 ((ThreadView)View).grd_main.RowDefinitions[3].Height = new System.Windows.GridLength(0);
-                ((ThreadView)View).grd_main.Children.Remove(((ThreadView)View).FollowButton);
+                ((ThreadView)View).grd_main.Children.Remove(((ThreadView)View).FollowOrUnFollowButton);
+            }
+            else
+            {
+                if (MainViewModel.LoggedInUser.Thread.Contains(CurrentThread))
+                {
+                    FollowOrUnfollowButtonContent = "unfollow";
+                }
+                else
+                {
+                    FollowOrUnfollowButtonContent = "follow";
+                }
             }
             RefreshPostList();
             ResetReplyRecipient();
@@ -151,6 +178,22 @@ namespace Forum.ViewModels
                 ReplyText = "";
                 ResetReplyRecipient();
                 RefreshPostList();
+            }
+        }
+
+        private void FollowOrUnfollowThread()
+        {
+            if (MainViewModel.LoggedInUser.Thread.Contains(CurrentThread))
+            {
+                MainViewModel.LoggedInUser.Thread.Remove(CurrentThread);
+                _context.SaveChanges();
+                FollowOrUnfollowButtonContent = "follow";
+            }
+            else
+            {
+                MainViewModel.LoggedInUser.Thread.Add(CurrentThread);
+                _context.SaveChanges();
+                FollowOrUnfollowButtonContent = "unfollow";
             }
         }
     }

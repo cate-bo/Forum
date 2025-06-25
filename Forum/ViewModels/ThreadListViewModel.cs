@@ -70,24 +70,32 @@ namespace Forum.ViewModels
 
             CurrentTopic = topic;
 
-            var threads = _context.Thread
-                .Where(a => a.TopicId == CurrentTopic.TopicId);
-            foreach (Models.Thread thread in threads)
-            {
-                Threads.Add(thread);
-            }
+            RefreshThreadList();
 
             //treadcreationwindow
-            MainViewModel.CreateThreadWindow = new CreateThreadWindow(this);
             MainViewModel.CreateThreadWindow.Closing += CreateThreadWindow_Closing;
             TitleInput = "";
             DescriptionInput = "";
             ThreadCreationErrormessage = "";
             ClickCreateThread = new RelayCommand(AttemtThreadCreation);
+            //this has to after initializing relaycommand
+            MainViewModel.CreateThreadWindow.DataContext = this;
+
 
             if (!MainViewModel.IsLoggedIn)
             {
                 ((ThreadListView)View).grd_main.Children.Remove(((ThreadListView)View).NewThreadButton);
+            }
+        }
+
+        private void RefreshThreadList()
+        {
+            var threads = _context.Thread
+                .Where(a => a.TopicId == CurrentTopic.TopicId)
+                .Include(b => b.Op);
+            foreach (Models.Thread thread in threads)
+            {
+                Threads.Add(thread);
             }
         }
 
@@ -128,9 +136,11 @@ namespace Forum.ViewModels
                 _context.SaveChanges();
                 tempThread.Title = TitleInput;
                 tempThread.Op = tempPost;
+                tempThread.Topic = CurrentTopic;
                 _context.Add(tempThread);
                 _context.SaveChanges();
                 MainViewModel.CreateThreadWindow.Close();
+                RefreshThreadList();
             }
         }
 

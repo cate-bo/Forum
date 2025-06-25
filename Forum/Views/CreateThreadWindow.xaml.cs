@@ -20,10 +20,9 @@ namespace Forum.Views
     /// </summary>
     public partial class CreateThreadWindow : Window
     {
-        public CreateThreadWindow(ThreadListViewModel viewModel)
+        public CreateThreadWindow()
         {
             InitializeComponent();
-            DataContext = viewModel;
         }
     }
 }

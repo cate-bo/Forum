@@ -27,7 +27,7 @@
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
                             <TextBlock Text="{Binding Title}" Grid.Column="0" Grid.Row="0"/>
-                            <TextBlock Text="bbbbbbbbbbbbb" Grid.Column="0" Grid.Row="1"/>
+                            <TextBlock Text="{Binding Op.Text}" Grid.Column="0" Grid.Row="1"/>
                         </Grid>
                     </Button>
                 </DataTemplate>

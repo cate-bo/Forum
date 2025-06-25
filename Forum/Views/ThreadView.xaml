@@ -16,8 +16,8 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding _thread.Title}" FontSize="40"/>
-        <Button Name="FollowButton" Content="follow" HorizontalAlignment="Right" Margin="15" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding CurrentThread.Title}" FontSize="40"/>
+        <Button Name="FollowOrUnFollowButton" Content="{Binding FollowOrUnfollowButtonContent}" HorizontalAlignment="Right" Margin="15" VerticalAlignment="Top" Command="{Binding ClickFollowOrUnfollow}"/>
         <TextBlock Grid.Row="1" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding OPsUsername}" VerticalAlignment="Top" Margin="15"/>
         <TextBlock Grid.Row="1" HorizontalAlignment="Center" Margin="0" TextWrapping="Wrap" Text="{Binding OP.Text}" VerticalAlignment="Center"/>
         <TreeView Grid.Row="2" Name="PostList" Margin="10"/>
