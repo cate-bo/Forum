@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Forum"
         mc:Ignorable="d"
-        Title="MainWindow" Height="1080" Width="1920" Background="#FF2D2D2D">
+        Title="MainWindow" Height="1080" Width="1920" Background="#FF2A125F">
     <Window.Resources>
         <Style TargetType="Button">
             <Setter Property="BorderThickness" Value="0"/>
@@ -22,12 +22,31 @@
         <Button HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" Command="{Binding GoHome}">
             <Image Source="C:\Users\cate\source\repos\Forum\Forum\Views\Assets\logo_standard.png"/>
         </Button>
-        <Button Name="userButtonThing" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="250" Command="{Binding OpenPopupButtonPressed}">
+        <Button Name="userButtonThing" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="250" Command="{Binding OpenPopupButtonPressed}" Foreground="#FFBBBBBB" BorderThickness="0">
             <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Height="60">
                 <Popup x:Name="popupthing" IsOpen="{Binding IsPopupOpen}" Width="250" Placement="Bottom" StaysOpen="False">
                 </Popup>
                 <TextBlock Name="LoginDisplay" VerticalAlignment="Center"/>
             </Grid>
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Background" Value="#FF4C4C4C"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border Background="{TemplateBinding Background}">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#FF2D2D2D"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
         </Button>
     </Grid>
 </Window>

@@ -11,7 +11,7 @@
             <Setter Property="Visibility" Value="Visible"/>
         </Style>
     </UserControl.Resources>
-    <Grid>
+    <Grid Background="#FF2D2D2D">
         <Grid.RowDefinitions>
             <RowDefinition Height="100"/>
             <RowDefinition/>
@@ -32,31 +32,44 @@
                 </Button>
             </Border>
         </Grid>
-        <ListBox HorizontalContentAlignment="Stretch" Grid.Row="1" d:ItemsSource="{d:SampleData ItemCount=5}" ItemsSource="{Binding Topics}" Name="TopicList">
+        <ListBox HorizontalContentAlignment="Stretch" Grid.Row="1" d:ItemsSource="{d:SampleData ItemCount=5}" ItemsSource="{Binding Topics}" Name="TopicList" Background="#FF2D2D2D">
             <ListBox.Resources>
-                <Style TargetType="ListBoxItem" x:Key="ContainerStyle">
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="Transparent"/>
-                        </Trigger>
-                    </Style.Triggers>
+                <Style TargetType="Button">
+                    <Style.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="5"/>
+                            <Setter Property="BorderThickness" Value="0"/>
+                        </Style>
+                    </Style.Resources>
+                </Style>
+                <Style TargetType="TextBlock">
+                    <Style.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Foreground" Value="#FFBBBBBB"/>
+                        </Style>
+                    </Style.Resources>
                 </Style>
             </ListBox.Resources>
             <ListBox.ItemTemplate>
+
                 <DataTemplate>
-                    <Button Command="{Binding DataContext.SelectTopic, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" Height="100" Margin="100,10">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-                            <TextBlock Text="{Binding Title}" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center"/>
-                            <TextBlock Text="{Binding Description}" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center"/>
-                        </Grid>
-                    </Button>
+                    <Border CornerRadius="5" Margin="100,10" BorderBrush="#FF272727" BorderThickness="2">
+                        <Button Command="{Binding DataContext.SelectTopic, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" Height="100" Background="#FF3C3C3C">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="{Binding Title}" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" Foreground="#FFBBBBBB"/>
+                                <TextBlock Text="{Binding Description}" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" Foreground="#FFBBBBBB"/>
+                            </Grid>
+                            
+
+                        </Button>
+                    </Border>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
