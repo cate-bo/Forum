@@ -24,16 +24,54 @@
                 <ColumnDefinition/>
                 <ColumnDefinition Width="100"/>
             </Grid.ColumnDefinitions>
-            <Border Grid.Column="1" Margin="30">
+            <Border Grid.Column="1" Margin="30" CornerRadius="50" Background="#FF3C3C3C" BorderThickness="2" BorderBrush="#FF929292">
+                <Border.Resources>
+                    <Style TargetType="Button">
+                        <Style.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="50"/>
+                                <Setter Property="BorderThickness" Value="0"/>
+                            </Style>
+                        </Style.Resources>
+                    </Style>
+                    <Style TargetType="TextBlock">
+                        <Style.Resources>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Foreground" Value="#FFBBBBBB"/>
+                            </Style>
+                        </Style.Resources>
+                    </Style>
+                </Border.Resources>
                 <Button HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontFamily="Comic Sans MS" Command="{Binding ClickNewTopic}">
                     <Viewbox Stretch="Uniform">
-                        <TextBlock Text="+" FontSize="80" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        <TextBlock Margin="0,0,0,10" Text="+" FontSize="80" Foreground="#FFBBBBBB" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Heavy"/>
                     </Viewbox>
+                    <Button.Style>
+                        <Style TargetType="{x:Type Button}">
+                            <Setter Property="Background" Value="#FF2A125F"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type Button}">
+                                        <Border Background="{TemplateBinding Background}" BorderThickness="2" BorderBrush="#FF929292" CornerRadius="50">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#FF2D2D2D"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
                 </Button>
             </Border>
+            <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="Topics" Foreground="#FFBBBBBB" Grid.ColumnSpan="2" FontSize="50" VerticalAlignment="Center"/>
         </Grid>
-        <ListBox HorizontalContentAlignment="Stretch" Grid.Row="1" d:ItemsSource="{d:SampleData ItemCount=5}" ItemsSource="{Binding Topics}" Name="TopicList" Background="#FF2D2D2D">
-            <ListBox.Resources>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+        <ItemsControl HorizontalContentAlignment="Stretch" d:ItemsSource="{d:SampleData ItemCount=5}" ItemsSource="{Binding Topics}" Name="TopicList" Background="#FF2D2D2D">
+            <ItemsControl.Resources>
                 <Style TargetType="Button">
                     <Style.Resources>
                         <Style TargetType="Border">
@@ -49,30 +87,50 @@
                         </Style>
                     </Style.Resources>
                 </Style>
-            </ListBox.Resources>
-            <ListBox.ItemTemplate>
+            </ItemsControl.Resources>
+            <ItemsControl.ItemTemplate>
 
                 <DataTemplate>
-                    <Border CornerRadius="5" Margin="100,10" BorderBrush="#FF272727" BorderThickness="2">
-                        <Button Command="{Binding DataContext.SelectTopic, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" Height="100" Background="#FF3C3C3C">
-                            <Grid>
+                        <Button Command="{Binding DataContext.SelectTopic, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" Height="100" VerticalAlignment="Stretch" Margin="100,10">
+                            <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Height="100" Background="Transparent">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition/>
+                                    <RowDefinition Height="30"/>
                                     <RowDefinition/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Text="{Binding Title}" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" Foreground="#FFBBBBBB"/>
-                                <TextBlock Text="{Binding Description}" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" Foreground="#FFBBBBBB"/>
+                                <Border BorderThickness="0,0,0,1" BorderBrush="#FF929292" Background="#FF2A125F" CornerRadius="5">
+                                    <TextBlock Text="{Binding Title}" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" Foreground="#FFBBBBBB"/>
+                                </Border>
+                                <TextBlock Margin="3" Text="{Binding Description}" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch" Foreground="#FFBBBBBB"/>
                             </Grid>
-                            
+
+                            <Button.Style>
+                                <Style TargetType="{x:Type Button}">
+                                <Setter Property="Background" Value="#FF3C3C3C"/>
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type Button}">
+                                                <Border Background="{TemplateBinding Background}" BorderThickness="2" BorderBrush="#FF929292" CornerRadius="5">
+                                                    <ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#FF2D2D2D"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
 
                         </Button>
-                    </Border>
                 </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        </ScrollViewer>
     </Grid>
 </UserControl>

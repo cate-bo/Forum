@@ -6,16 +6,40 @@
              xmlns:local="clr-namespace:Forum.Views"
              mc:Ignorable="d" 
              d:DesignHeight="20" d:DesignWidth="800">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="20"/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <Button Content="X" HorizontalAlignment="Left" VerticalAlignment="Center" Width="20" Command="{Binding ClickXReply}"/>
-        <TextBlock Grid.Column="1" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding ReplyingTo.Poster.Username}" VerticalAlignment="Center"/>
+    <Border Background="#FF3C3C3C" BorderThickness="2" BorderBrush="#FF929292" CornerRadius="10" VerticalAlignment="Top" HorizontalAlignment="Left">
 
-    </Grid>
+        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button HorizontalAlignment="Left" VerticalAlignment="Center" Width="20" Command="{Binding ClickXReply}">
+                <TextBlock Text="X" Foreground="#FFBBBBBB"/>
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Background" Value="#FF2A125F"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border Background="{TemplateBinding Background}" BorderThickness="1" BorderBrush="#FF929292" CornerRadius="10" Height="20" Width="20">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#FF2D2D2D"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <TextBlock Grid.Column="1" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding ReplyingTo.Poster.Username}" VerticalAlignment="Center" Foreground="#FFBBBBBB" Margin="3"/>
+
+        </Grid>
+    </Border>
 </UserControl>

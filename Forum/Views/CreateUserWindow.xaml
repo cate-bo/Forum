@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Forum.Views"
         mc:Ignorable="d"
         Title="new user" Height="240" Width="300">
-    <Grid>
+    <Grid Background="#FF2D2D2D">
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition/>
@@ -17,13 +17,58 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="username" VerticalAlignment="Center"/>
-        <TextBlock HorizontalAlignment="Center" Grid.Row="1" TextWrapping="Wrap" Text="password" VerticalAlignment="Center"/>
-        <TextBlock HorizontalAlignment="Center" Grid.Row="2" TextWrapping="Wrap" Text="reenter password" VerticalAlignment="Center"/>
-        <TextBox Name="UsernameInputField" Grid.Column="1" HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding NewUsername}" VerticalAlignment="Center" Width="120"/>
-        <TextBox Grid.Column="1" HorizontalAlignment="Center" Grid.Row="1" TextWrapping="Wrap" Text="{Binding NewPassword1}" VerticalAlignment="Center" Width="120"/>
-        <TextBox Grid.Column="1" HorizontalAlignment="Center" Grid.Row="2" TextWrapping="Wrap" Text="{Binding NewPassword2}" VerticalAlignment="Center" Width="120"/>
-        <Button Grid.Column="1" Content="create user" HorizontalAlignment="Center" Grid.Row="3" VerticalAlignment="Center" Command="{Binding CreateAttemtClick}"/>
+        <TextBlock Foreground="#FFBBBBBB" HorizontalAlignment="Center" TextWrapping="Wrap" Text="username" VerticalAlignment="Center"/>
+        <TextBlock Foreground="#FFBBBBBB" HorizontalAlignment="Center" Grid.Row="1" TextWrapping="Wrap" Text="password" VerticalAlignment="Center"/>
+        <TextBlock Foreground="#FFBBBBBB" HorizontalAlignment="Center" Grid.Row="2" TextWrapping="Wrap" Text="reenter password" VerticalAlignment="Center"/>
+        <TextBox Name="UsernameInputField" Grid.Column="1" HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding NewUsername}" VerticalAlignment="Center" Width="120">
+            <TextBox.Style>
+                <Style TargetType="TextBox">
+                    <Setter Property="Foreground" Value="#FFBBBBBB"/>
+                    <Setter Property="Background" Value="#FF3C3C3C"/>
+                    <Setter Property="Height" Value="20"/>
+                </Style>
+            </TextBox.Style>
+        </TextBox>
+        <TextBox Grid.Column="1" HorizontalAlignment="Center" Grid.Row="1" TextWrapping="Wrap" Text="{Binding NewPassword1}" VerticalAlignment="Center" Width="120">
+            <TextBox.Style>
+                <Style TargetType="TextBox">
+                    <Setter Property="Foreground" Value="#FFBBBBBB"/>
+                    <Setter Property="Background" Value="#FF3C3C3C"/>
+                    <Setter Property="Height" Value="20"/>
+                </Style>
+            </TextBox.Style>
+        </TextBox>
+        <TextBox Grid.Column="1" HorizontalAlignment="Center" Grid.Row="2" TextWrapping="Wrap" Text="{Binding NewPassword2}" VerticalAlignment="Center" Width="120">
+            <TextBox.Style>
+                <Style TargetType="TextBox">
+                    <Setter Property="Foreground" Value="#FFBBBBBB"/>
+                    <Setter Property="Background" Value="#FF3C3C3C"/>
+                    <Setter Property="Height" Value="20"/>
+                </Style>
+            </TextBox.Style>
+        </TextBox>
+        <Button Grid.Column="1" HorizontalAlignment="Center" Grid.Row="3" VerticalAlignment="Center" Command="{Binding CreateAttemtClick}">
+            <TextBlock Text="create user" Foreground="#FFBBBBBB"/>
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Background" Value="#FF2A125F"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border Background="{TemplateBinding Background}" BorderThickness="1" BorderBrush="#FF929292" CornerRadius="5">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#FF2D2D2D"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
         <TextBlock HorizontalAlignment="Center" Grid.ColumnSpan="2" Foreground="Red" Grid.Row="3" TextWrapping="Wrap" Text="{Binding CreateAttemtErrorMessage}" VerticalAlignment="Top"/>
 
     </Grid>

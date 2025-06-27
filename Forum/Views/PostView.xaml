@@ -6,18 +6,56 @@
              xmlns:local="clr-namespace:Forum.Views"
              mc:Ignorable="d" 
              d:DesignHeight="200" d:DesignWidth="400">
-    <Grid Name="grd_main">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="25"/>
-            <RowDefinition/>
-            <RowDefinition Height="20"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <TextBlock HorizontalAlignment="Left" Margin="5" TextWrapping="Wrap" Text="{Binding ThisPost.Poster.Username}" VerticalAlignment="Center"/>
-        <TextBlock HorizontalAlignment="Stretch" Margin="5" Grid.Row="1" TextWrapping="Wrap" Text="{Binding ThisPost.Text}" VerticalAlignment="Stretch"/>
-        <Button Content="reply" HorizontalAlignment="Right" Grid.Row="2" VerticalAlignment="Top" Command="{Binding ClickReply}"/>
+    <Border Background="#FF3C3C3C" BorderThickness="2" BorderBrush="#FF929292" CornerRadius="5" Height="100" Width="200">
+        <Grid Name="grd_main">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25"/>
+                <RowDefinition/>
+                <RowDefinition Height="20"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Border BorderThickness="0,0,0,1" BorderBrush="#FF929292" Background="#FF2A125F" CornerRadius="5"  Grid.ColumnSpan="2">
+                <TextBlock HorizontalAlignment="Left" Margin="5" TextWrapping="Wrap" Text="{Binding ThisPost.Poster.Username}" VerticalAlignment="Center">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Foreground" Value="#FFBBBBBB"/>
+                            <Setter Property="Height" Value="20"/>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </Border>
+            <TextBlock HorizontalAlignment="Stretch" Margin="5" Grid.Row="1" TextWrapping="Wrap" Text="{Binding ThisPost.Text}" VerticalAlignment="Stretch">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Foreground" Value="#FFBBBBBB"/>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+            <Button HorizontalAlignment="Right" Grid.Row="2" VerticalAlignment="Bottom" Command="{Binding ClickReply}">
+                <TextBlock Text="reply" Foreground="#FFBBBBBB"/>
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Background" Value="#FF2A125F"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border Background="{TemplateBinding Background}" BorderThickness="1" BorderBrush="#FF929292" CornerRadius="5">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#FF2D2D2D"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
 
-    </Grid>
+        </Grid>
+    </Border>
 </UserControl>

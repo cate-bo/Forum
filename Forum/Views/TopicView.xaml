@@ -14,8 +14,27 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Button Command="{Binding DataContext.ListTopics, RelativeSource={RelativeSource AncestorType=UserControl}}">
-            <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding CurrentTopic.Title}" FontSize="25" VerticalAlignment="Center" TextAlignment="Center"/>
+        <Button Command="{Binding DataContext.ListTopics, RelativeSource={RelativeSource AncestorType=UserControl}}" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock TextWrapping="Wrap" Text="{Binding CurrentTopic.Title}" FontSize="30" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center" Margin="5" Foreground="#FFBBBBBB" FontWeight="DemiBold"/>
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Background" Value="#FF2A125F"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border Background="{TemplateBinding Background}" CornerRadius="10" BorderThickness="2">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="BorderBrush" Value="#FF929292"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
         </Button>
 
     </Grid>

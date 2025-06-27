@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Forum.Views"
              mc:Ignorable="d" 
              d:DesignHeight="1080" d:DesignWidth="1920">
-    <Grid Name="grd_main">
+    <Grid Name="grd_main" Background="#FF2D2D2D">
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition Height="80"/>
@@ -16,13 +16,62 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding CurrentThread.Title}" FontSize="40"/>
-        <Button Name="FollowOrUnFollowButton" Content="{Binding FollowOrUnfollowButtonContent}" HorizontalAlignment="Right" Margin="15" VerticalAlignment="Top" Command="{Binding ClickFollowOrUnfollow}"/>
-        <TextBlock Grid.Row="1" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding OPsUsername}" VerticalAlignment="Top" Margin="15"/>
-        <TextBlock Grid.Row="1" HorizontalAlignment="Center" Margin="0" TextWrapping="Wrap" Text="{Binding OP.Text}" VerticalAlignment="Center"/>
-        <TreeView Grid.Row="2" Name="PostList" Margin="10"/>
-        <Button Content="post" HorizontalAlignment="Right" Margin="20" Grid.Row="3" VerticalAlignment="Bottom" Command="{Binding ClickPostButton}"/>
-        <TextBox HorizontalAlignment="Stretch" Margin="20,20,20,40" Grid.Row="3" TextWrapping="Wrap" Text="{Binding ReplyText}" VerticalAlignment="Stretch"/>
+        <TextBlock Foreground="#FFBBBBBB" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding CurrentThread.Title}" FontSize="40"/>
+        <Button Name="FollowOrUnFollowButton" HorizontalAlignment="Right" Margin="15" VerticalAlignment="Top" Command="{Binding ClickFollowOrUnfollow}">
+            <TextBlock Text="{Binding FollowOrUnfollowButtonContent}" Foreground="#FFBBBBBB"/>
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Background" Value="#FF2A125F"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border Background="{TemplateBinding Background}" BorderThickness="1" BorderBrush="#FF929292" CornerRadius="5">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#FF2D2D2D"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
+        <TextBlock Foreground="#FFBBBBBB" Grid.Row="1" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding OPsUsername}" VerticalAlignment="Top" Margin="15"/>
+        <TextBlock Foreground="#FFBBBBBB" Grid.Row="1" HorizontalAlignment="Center" Margin="0" TextWrapping="Wrap" Text="{Binding OP.Text}" VerticalAlignment="Center"/>
+        <TreeView Grid.Row="2" Name="PostList" Margin="10" Background="#FF2D2D2D"/>
+        <Button HorizontalAlignment="Right" Margin="20" Grid.Row="3" VerticalAlignment="Bottom" Command="{Binding ClickPostButton}">
+            <TextBlock Text="post" Foreground="#FFBBBBBB" Margin="2"/>
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Background" Value="#FF2A125F"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border Background="{TemplateBinding Background}" BorderThickness="1" BorderBrush="#FF929292" CornerRadius="5">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#FF2D2D2D"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
+        <TextBox HorizontalAlignment="Stretch" Margin="20,30,20,40" Grid.Row="3" TextWrapping="Wrap" Text="{Binding ReplyText}" VerticalAlignment="Stretch">
+            <TextBox.Style>
+                <Style TargetType="TextBox">
+                    <Setter Property="Foreground" Value="#FFBBBBBB"/>
+                    <Setter Property="Background" Value="#FF3C3C3C"/>
+                </Style>
+            </TextBox.Style>
+        </TextBox>
 
 
     </Grid>
