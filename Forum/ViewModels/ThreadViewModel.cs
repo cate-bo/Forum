@@ -16,12 +16,14 @@ namespace Forum.ViewModels
     public class ThreadViewModel : BaseViewModel
     {
         private ForumContext _context;
-        public Post OP { get; set; }
+        public PostViewModel OP { get; set; }
         public string OPsUsername { get; set; }
         public Models.Thread CurrentThread { get; set; }
-        private Post _replyingTo;
+        public ObservableCollection<TreeViewItem> Replies { get; set; }
 
-        public Post ReplyingTo
+        private PostViewModel _replyingTo;
+
+        public PostViewModel ReplyingTo
         {
             get { return _replyingTo; }
             set
@@ -79,11 +81,12 @@ namespace Forum.ViewModels
             _replyToDisplayView.Margin = new System.Windows.Thickness(20, 0, 0, 0);
             _replyToDisplayView.VerticalAlignment = System.Windows.VerticalAlignment.Top;
             
-            OP = _context.Post.Where(a => a.PostId == CurrentThread.Opid)
+            OP = new PostViewModel(_context.Post.Where(a => a.PostId == CurrentThread.Opid)
                 .Include(b => b.Poster)
-                .First();
+                .First()
+                , this);
 
-            OPsUsername = OP.Poster.Username;
+            OPsUsername = OP.ThisPost.Poster.Username;
             //hide textinput and follow button when not logged in
             if (!MainViewModel.IsLoggedIn)
             {
@@ -107,23 +110,23 @@ namespace Forum.ViewModels
 
         public void RefreshPostList()
         {
-            var posts = _context.Post.Where(a => a.PredecessorId == OP.PostId).Include(b => b.Poster);
+            var posts = _context.Post.Where(a => a.PredecessorId == OP.ThisPost.PostId).Include(b => b.Poster);
             List<Post> _posts = new List<Post>();
             foreach (Post post in posts)
             {
                 _posts.Add(post);
             }
-            ObservableCollection<TreeViewItem> collection = new ObservableCollection<TreeViewItem>();
-            ((ThreadView)View).PostList.ItemsSource = collection;
+            Replies = new ObservableCollection<TreeViewItem>();
+            ((ThreadView)View).PostList.ItemsSource = Replies;
             foreach (Post post in _posts)
             {
                 PostViewModel temp = new PostViewModel(post, this);
-                collection.Add(temp.PostTreeViewItem);
-                FillReplies(post.PostId, temp.PostTreeViewItem);
+                Replies.Add(temp.PostTreeViewItem);
+                FillReplies(post.PostId, temp);
             }
         }
 
-        private void FillReplies(int predecessorID, TreeViewItem predecessor)
+        private void FillReplies(int predecessorID, PostViewModel predecessor)
         {
             var posts = _context.Post.Where(a => a.PredecessorId == predecessorID).Include(b => b.Poster);
             List<Post> _posts = new List<Post>();
@@ -133,18 +136,16 @@ namespace Forum.ViewModels
             }
             if(_posts.Count > 0)
             {
-                ObservableCollection<TreeViewItem> collection = new ObservableCollection<TreeViewItem>();
-                predecessor.ItemsSource = collection;
                 foreach(Post post in _posts)
                 {
                     PostViewModel temp = new PostViewModel(post, this);
-                    collection.Add(temp.PostTreeViewItem);
-                    FillReplies(post.PostId, temp.PostTreeViewItem);
+                    predecessor.Replies.Add(temp.PostTreeViewItem);
+                    FillReplies(post.PostId, temp);
                 }
             }
         }
 
-        public void ChangeReplyRecipient(Post post)
+        public void ChangeReplyRecipient(PostViewModel post)
         {
             ReplyingTo = post;
             if(ReplyingTo == OP)
@@ -171,13 +172,21 @@ namespace Forum.ViewModels
             {
                 Post reply = new Post();
                 reply.Poster = MainViewModel.LoggedInUser;
-                reply.Predecessor = ReplyingTo;
+                reply.Predecessor = ReplyingTo.ThisPost;
                 reply.Text = ReplyText;
                 _context.Add(reply);
                 _context.SaveChanges();
                 ReplyText = "";
+                PostViewModel temp = new PostViewModel(reply, this);
+                if(ReplyingTo == OP)
+                {
+                    Replies.Add(temp.PostTreeViewItem);
+                }
+                else
+                {
+                    ReplyingTo.Replies.Add(temp.PostTreeViewItem);
+                }
                 ResetReplyRecipient();
-                RefreshPostList();
             }
         }
 

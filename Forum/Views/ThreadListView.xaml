@@ -15,6 +15,13 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <ScrollViewer.Resources>
+                <Style TargetType="ScrollBar">
+                    <Setter Property="Foreground" Value="#FF929292"/>
+                    <Setter Property="Background" Value="#FF3C3C3C"/>
+                    <Setter Property="BorderBrush" Value="Transparent"/>
+                </Style>
+            </ScrollViewer.Resources>
         <ItemsControl d:ItemsSource="{d:SampleData ItemCount=5}" ItemsSource="{Binding Threads}" HorizontalContentAlignment="Stretch">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
@@ -29,7 +36,7 @@
                             </Grid.RowDefinitions>
                             <Border BorderThickness="0,0,0,1" BorderBrush="#FF929292" Background="#FF2A125F" CornerRadius="5"  Grid.ColumnSpan="2">
 
-                                <TextBlock Text="{Binding Title}" Grid.Column="0" Grid.Row="0" Margin="3">
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding Title}" Grid.Column="0" Grid.Row="0" Margin="3">
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock">
                                             <Setter Property="Foreground" Value="#FFBBBBBB"/>

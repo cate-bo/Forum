@@ -12,12 +12,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using Microsoft.EntityFrameworkCore;
 
 namespace Forum.ViewModels
 {
     public class MainViewModel : BaseViewModel
     {
-        private readonly ForumContext _context;
+        private ForumContext _context;
         private MainWindow _window;
         //currently displayed UserControl
         public BaseViewModel CurrentMainContent { get; set; }
@@ -43,17 +44,7 @@ namespace Forum.ViewModels
             }
         }
 
-        private string _passwordInput;
-
-        public string PasswordInput
-        {
-            get { return _passwordInput; }
-            set
-            {
-                _passwordInput = value;
-                OnpropertyChanged(nameof(PasswordInput));
-            }
-        }
+        
 
         public RelayCommand LoginAttemtClick { get; set; }
         private System.Windows.Visibility _loginAttemtErrormessage;
@@ -93,29 +84,7 @@ namespace Forum.ViewModels
             }
         }
 
-        private string _newPassword1;
-
-        public string NewPassword1
-        {
-            get { return _newPassword1; }
-            set
-            {
-                _newPassword1 = value;
-                OnpropertyChanged(nameof(NewPassword1));
-            }
-        }
-
-        private string _newPassword2;
-
-        public string NewPassword2
-        {
-            get { return _newPassword2; }
-            set
-            {
-                _newPassword2 = value;
-                OnpropertyChanged(nameof(NewPassword2));
-            }
-        }
+       
 
         public RelayCommand CreateAttemtClick { get; set; }
 
@@ -226,8 +195,8 @@ namespace Forum.ViewModels
             CreateUserWindow.Closing += CloseCreateUserWindow;
             CreateAttemtClick = new RelayCommand(AttemtUserCreation);
             NewUsername = "";
-            NewPassword1 = "";
-            NewPassword2 = "";
+            CreateUserWindow.passw1.Password = "";
+            CreateUserWindow.passw2.Password = "";
             CreateAttemtErrorMessage = "";
 
             //topic creation stuff
@@ -336,8 +305,8 @@ namespace Forum.ViewModels
             {
                 e.Cancel = true;
                 NewUsername = "";
-                NewPassword1 = "";
-                NewPassword2 = "";
+                CreateUserWindow.passw1.Password = "";
+                CreateUserWindow.passw2.Password = "";
                 CreateAttemtErrorMessage = "";
                 CreateUserWindow.Hide();
             }
@@ -354,7 +323,7 @@ namespace Forum.ViewModels
                 CreateAttemtErrorMessage = "username already taken";
                 NewUsername = "";
             }
-            else if(NewPassword1 != NewPassword2)
+            else if(CreateUserWindow.passw1.Password != CreateUserWindow.passw2.Password)
             {
                 CreateAttemtErrorMessage = "passwords don't match";
             }
@@ -362,20 +331,20 @@ namespace Forum.ViewModels
             {
                 User temp = new User();
                 temp.Username = NewUsername;
-                temp.Password = NewPassword1;
+                temp.Password = CreateUserWindow.passw1.Password;
                 _context.Add(temp);
                 _context.SaveChanges();
                 Login(temp);
 
                 NewUsername = "";
-                NewPassword1 = "";
-                NewPassword2 = "";
+                CreateUserWindow.passw1.Password = "";
+                CreateUserWindow.passw2.Password = "";
                 CreateAttemtErrorMessage = "";
                 CreateUserWindow.Hide();
             }
 
-            NewPassword1 = "";
-            NewPassword2 = "";
+            CreateUserWindow.passw1.Password = "";
+            CreateUserWindow.passw2.Password = "";
         }
 
         private void ViewFollowedThreads()
@@ -407,16 +376,18 @@ namespace Forum.ViewModels
             User temp = new User();
             try
             {
-                temp = _context.User.Where(a => a.Username == UsernameInput).First();
+                temp = _context.User.Where(a => a.Username == UsernameInput)
+                    .Include(b => b.Thread)
+                    .First();
             }
             catch (Exception ex)
             {
                 UsernameInput = "";
-                PasswordInput = "";
+                LoginWindow.pwordbox.Password = "";
                 LoginAttemtErrormessage = Visibility.Visible;
                 return;
             }
-            if (temp.Password == PasswordInput)
+            if (temp.Password == LoginWindow.pwordbox.Password)
             {
                 Login(temp);
                 LoginWindow.Close();
@@ -424,7 +395,7 @@ namespace Forum.ViewModels
             else
             {
                 UsernameInput = "";
-                PasswordInput = "";
+                LoginWindow.pwordbox.Password = "";
                 LoginAttemtErrormessage = Visibility.Visible;
             }
         }
@@ -455,13 +426,17 @@ namespace Forum.ViewModels
                 e.Cancel = true;
                 LoginAttemtErrormessage = Visibility.Hidden;
                 UsernameInput = "";
-                PasswordInput = "";
+                LoginWindow.pwordbox.Password = "";
                 LoginWindow.Hide();
             }
         }
 
         private void OpenLoginWindow()
         {
+            LoginWindow.Close();
+            CreateUserWindow.Close();
+            CreateTopicWindow.Close();
+            CreateThreadWindow.Close();
             LoginWindow.Show();
             LoginWindow.UsernameInputField.Focus();
             IsPopupOpen = false;
@@ -469,6 +444,10 @@ namespace Forum.ViewModels
 
         private void OpenCreateUserWindow()
         {
+            LoginWindow.Close();
+            CreateUserWindow.Close();
+            CreateTopicWindow.Close();
+            CreateThreadWindow.Close();
             CreateUserWindow.Show();
             CreateUserWindow.UsernameInputField.Focus();
             IsPopupOpen = false;

@@ -49,15 +49,15 @@
                 </Style>
             </TextBox.Style>
         </TextBox>
-        <TextBox Name="pwordbox" Grid.Column="1" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Center" Width="120" Text="{Binding PasswordInput}">
-            <TextBox.Style>
-                <Style TargetType="TextBox">
+        <PasswordBox Name="pwordbox" Grid.Column="1" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Center" Width="120">
+            <PasswordBox.Style>
+                <Style TargetType="PasswordBox">
                     <Setter Property="Foreground" Value="#FFBBBBBB"/>
                     <Setter Property="Background" Value="#FF3C3C3C"/>
                     <Setter Property="Height" Value="20"/>
                 </Style>
-            </TextBox.Style>
-        </TextBox>
+            </PasswordBox.Style>
+        </PasswordBox>
         <TextBlock HorizontalAlignment="Center" Grid.Row="2" TextWrapping="Wrap" Text="incorrect username or password" VerticalAlignment="Top" Foreground="Red" Grid.ColumnSpan="2" Visibility="{Binding LoginAttemtErrormessage}"/>
 
     </Grid>

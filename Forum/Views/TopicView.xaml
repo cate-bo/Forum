@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Forum.Views"
              mc:Ignorable="d" 
              d:DesignHeight="1080" d:DesignWidth="1920">
-    <Grid Name="grd_topicView">
+    <Grid Name="grd_topicView" Background="#FF2D2D2D">
         <Grid.RowDefinitions>
             <RowDefinition Height="100"/>
             <RowDefinition/>
@@ -18,7 +18,7 @@
             <TextBlock TextWrapping="Wrap" Text="{Binding CurrentTopic.Title}" FontSize="30" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center" Margin="5" Foreground="#FFBBBBBB" FontWeight="DemiBold"/>
             <Button.Style>
                 <Style TargetType="{x:Type Button}">
-                    <Setter Property="Background" Value="#FF2A125F"/>
+                    <Setter Property="Background" Value="#FF2D2D2D"/>
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="{x:Type Button}">

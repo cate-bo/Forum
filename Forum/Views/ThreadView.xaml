@@ -16,7 +16,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <TextBlock Foreground="#FFBBBBBB" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding CurrentThread.Title}" FontSize="40"/>
+        <TextBlock Foreground="#FFBBBBBB" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding CurrentThread.Title}" FontSize="30" FontWeight="DemiBold"/>
         <Button Name="FollowOrUnFollowButton" HorizontalAlignment="Right" Margin="15" VerticalAlignment="Top" Command="{Binding ClickFollowOrUnfollow}">
             <TextBlock Text="{Binding FollowOrUnfollowButtonContent}" Foreground="#FFBBBBBB"/>
             <Button.Style>
@@ -40,8 +40,27 @@
             </Button.Style>
         </Button>
         <TextBlock Foreground="#FFBBBBBB" Grid.Row="1" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding OPsUsername}" VerticalAlignment="Top" Margin="15"/>
-        <TextBlock Foreground="#FFBBBBBB" Grid.Row="1" HorizontalAlignment="Center" Margin="0" TextWrapping="Wrap" Text="{Binding OP.Text}" VerticalAlignment="Center"/>
-        <TreeView Grid.Row="2" Name="PostList" Margin="10" Background="#FF2D2D2D"/>
+        <TextBlock Foreground="#FFBBBBBB" Grid.Row="1" HorizontalAlignment="Center" Margin="0" TextWrapping="Wrap" Text="{Binding OP.ThisPost.Text}" VerticalAlignment="Center"/>
+        <TreeView Grid.Row="2" Name="PostList" Margin="100,10,0,10" Background="#FF2D2D2D">
+            <TreeView.Resources>
+                <Style TargetType="ScrollBar">
+                    <Setter Property="Foreground" Value="#FF929292"/>
+                    <Setter Property="Background" Value="#FF3C3C3C"/>
+                    <Setter Property="BorderBrush" Value="Transparent"/>
+                </Style>
+            </TreeView.Resources>
+            <TreeView.Template>
+                <ControlTemplate TargetType="TreeView">
+                    <Border BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="0"
+                SnapsToDevicePixels="true">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <ItemsPresenter/>
+                        </ScrollViewer>
+                    </Border>
+                </ControlTemplate>
+            </TreeView.Template>
+        </TreeView>
         <Button HorizontalAlignment="Right" Margin="20" Grid.Row="3" VerticalAlignment="Bottom" Command="{Binding ClickPostButton}">
             <TextBlock Text="post" Foreground="#FFBBBBBB" Margin="2"/>
             <Button.Style>

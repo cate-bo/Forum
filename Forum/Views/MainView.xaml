@@ -70,6 +70,13 @@
             <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="Topics" Foreground="#FFBBBBBB" Grid.ColumnSpan="2" FontSize="50" VerticalAlignment="Center"/>
         </Grid>
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <ScrollViewer.Resources>
+                <Style TargetType="ScrollBar">
+                    <Setter Property="Foreground" Value="#FF929292"/>
+                    <Setter Property="Background" Value="#FF3C3C3C"/>
+                    <Setter Property="BorderBrush" Value="Transparent"/>
+                </Style>
+            </ScrollViewer.Resources>
         <ItemsControl HorizontalContentAlignment="Stretch" d:ItemsSource="{d:SampleData ItemCount=5}" ItemsSource="{Binding Topics}" Name="TopicList" Background="#FF2D2D2D">
             <ItemsControl.Resources>
                 <Style TargetType="Button">

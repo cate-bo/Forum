@@ -29,24 +29,24 @@
                 </Style>
             </TextBox.Style>
         </TextBox>
-        <TextBox Grid.Column="1" HorizontalAlignment="Center" Grid.Row="1" TextWrapping="Wrap" Text="{Binding NewPassword1}" VerticalAlignment="Center" Width="120">
-            <TextBox.Style>
-                <Style TargetType="TextBox">
+        <PasswordBox Name="passw1" Grid.Column="1" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Center" Width="120">
+            <PasswordBox.Style>
+                <Style TargetType="PasswordBox">
                     <Setter Property="Foreground" Value="#FFBBBBBB"/>
                     <Setter Property="Background" Value="#FF3C3C3C"/>
                     <Setter Property="Height" Value="20"/>
                 </Style>
-            </TextBox.Style>
-        </TextBox>
-        <TextBox Grid.Column="1" HorizontalAlignment="Center" Grid.Row="2" TextWrapping="Wrap" Text="{Binding NewPassword2}" VerticalAlignment="Center" Width="120">
-            <TextBox.Style>
-                <Style TargetType="TextBox">
+            </PasswordBox.Style>
+        </PasswordBox>
+        <PasswordBox Name="passw2" Grid.Column="1" HorizontalAlignment="Center" Grid.Row="2" VerticalAlignment="Center" Width="120">
+            <PasswordBox.Style>
+                <Style TargetType="PasswordBox">
                     <Setter Property="Foreground" Value="#FFBBBBBB"/>
                     <Setter Property="Background" Value="#FF3C3C3C"/>
                     <Setter Property="Height" Value="20"/>
                 </Style>
-            </TextBox.Style>
-        </TextBox>
+            </PasswordBox.Style>
+        </PasswordBox>
         <Button Grid.Column="1" HorizontalAlignment="Center" Grid.Row="3" VerticalAlignment="Center" Command="{Binding CreateAttemtClick}">
             <TextBlock Text="create user" Foreground="#FFBBBBBB"/>
             <Button.Style>
