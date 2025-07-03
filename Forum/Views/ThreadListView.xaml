@@ -35,7 +35,14 @@
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
                             <Border BorderThickness="0,0,0,1" BorderBrush="#FF929292" Background="#FF2A125F" CornerRadius="5"  Grid.ColumnSpan="2">
-
+                                    <Grid>
+                                    <TextBlock HorizontalAlignment="Left" Text="{Binding Op.Poster.Username}" Grid.Column="0" Grid.Row="0" Margin="3">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Foreground" Value="#FFBBBBBB"/>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
                                 <TextBlock HorizontalAlignment="Center" Text="{Binding Title}" Grid.Column="0" Grid.Row="0" Margin="3">
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock">
@@ -43,7 +50,8 @@
                                         </Style>
                                     </TextBlock.Style>
                                 </TextBlock>
-                            </Border>
+                                    </Grid>
+                                </Border>
 
                             <TextBlock Text="{Binding Op.Text}" Grid.Column="0" Grid.Row="1" Margin="3">
                                 <TextBlock.Style>

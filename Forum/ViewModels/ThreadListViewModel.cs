@@ -90,9 +90,11 @@ namespace Forum.ViewModels
 
         private void RefreshThreadList()
         {
+            Threads.Clear();
             var threads = _context.Thread
                 .Where(a => a.TopicId == CurrentTopic.TopicId)
-                .Include(b => b.Op);
+                .Include(b => b.Op)
+                .ThenInclude(c => c.Poster);
             foreach (Models.Thread thread in threads)
             {
                 Threads.Add(thread);
