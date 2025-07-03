@@ -14,6 +14,9 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
+        <TextBlock Foreground="#FFBBBBBB" HorizontalAlignment="Right" Margin="30" Text="{Binding CurrentTopic.Description}" VerticalAlignment="Center">
+            
+        </TextBlock>
         <Button Command="{Binding DataContext.ListTopics, RelativeSource={RelativeSource AncestorType=UserControl}}" HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock TextWrapping="Wrap" Text="{Binding CurrentTopic.Title}" FontSize="30" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center" Margin="5" Foreground="#FFBBBBBB" FontWeight="DemiBold"/>
             <Button.Style>
